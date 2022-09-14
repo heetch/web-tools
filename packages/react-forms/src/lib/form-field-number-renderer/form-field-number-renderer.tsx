@@ -1,4 +1,4 @@
-import { Controller, FieldValue, UseControllerProps } from 'react-hook-form';
+import { Controller, UseControllerProps } from 'react-hook-form';
 import { InputField } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldNumber } from '../../types/fields';
@@ -6,6 +6,7 @@ import { FormFieldNumber } from '../../types/fields';
 export function FormFieldNumberRenderer({
   field,
   control,
+  options,
 }: FormFieldRendererProps<FormFieldNumber>) {
   const rules = (field.validators || []).reduce<UseControllerProps['rules']>(
     (acc, cur) => {
@@ -47,10 +48,6 @@ export function FormFieldNumberRenderer({
       : {}
   );
 
-  if (field.format === 'integer') {
-    rules;
-  }
-
   return (
     <Controller
       control={control}
@@ -60,6 +57,10 @@ export function FormFieldNumberRenderer({
         const props = {
           ...fieldProps,
           id: fieldProps.name,
+          label: options?.showLabelsAsPlaceholders ? undefined : field.label,
+          placeholder: options?.showLabelsAsPlaceholders
+            ? field.label
+            : field.placeholder,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
           type: 'number',

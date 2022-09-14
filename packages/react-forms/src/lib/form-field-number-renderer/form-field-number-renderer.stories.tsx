@@ -38,11 +38,15 @@ export default {
 } as ComponentMeta<typeof FormFieldNumberRenderer>;
 
 const Template: ComponentStory<typeof FormFieldNumberRenderer> = (
-  { field },
+  { field, options },
   { control }
 ) => (
   <div style={{ maxWidth: 300 }}>
-    <FormFieldNumberRenderer control={control} field={field} />
+    <FormFieldNumberRenderer
+      control={control}
+      field={field}
+      options={options}
+    />
   </div>
 );
 
@@ -60,7 +64,14 @@ Decimal.args = {
 
 export const Integer = Template.bind({});
 Integer.args = {
-  field: { ...base, format: 'integer' },
+  field: { ...base, format: 'integer', placeholder: 'Please enter an integer' },
+};
+
+export const LabelAsPlaceholder = Template.bind({});
+LabelAsPlaceholder.storyName = 'Label as placeholder';
+LabelAsPlaceholder.args = {
+  field: base,
+  options: { showLabelsAsPlaceholders: true },
 };
 
 export const Helper = Template.bind({});
