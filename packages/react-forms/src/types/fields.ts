@@ -6,13 +6,14 @@ import {
   FormFieldValidatorString,
 } from './validators';
 
-export type FormFieldType = 'string' | 'number' | 'boolean' | 'file';
+export type FormFieldType = 'string' | 'date' | 'number' | 'boolean' | 'file';
 
 export type FormField<K extends string = string> =
   | FormFieldBoolean<K>
   | FormFieldNumber<K>
   | FormFieldFile<K>
-  | FormFieldString<K>;
+  | FormFieldString<K>
+  | FormFieldDate<K>;
 
 export type FormFieldOption = {
   value: string;
@@ -51,6 +52,11 @@ export type FormFieldFile<K extends string = string> = FormField_<'file', K> & {
   validators?: FormFieldValidatorFile[];
 };
 
+export type FormFieldDate<K extends string = string> = FormField_<'date', K> & {
+  format: 'date' | 'date-time';
+  validators?: FormFieldValidatorDate[];
+};
+
 export type FormFieldString<K extends string = string> = FormField_<
   'string',
   K
@@ -59,10 +65,6 @@ export type FormFieldString<K extends string = string> = FormField_<
     | {
         format: 'line' | 'text' | 'uuid' | 'email';
         validators?: FormFieldValidatorString[];
-      }
-    | {
-        format: 'date' | 'date-time';
-        validators?: FormFieldValidatorDate[];
       }
     | {
         format: 'select';

@@ -48,9 +48,9 @@ export type FormFieldValidatorNumber =
   | FormFieldValidatorMax<number>;
 
 export type FormFieldValidatorDate =
-  | FormFieldValidatorCommon<string>
-  | FormFieldValidatorMin<string>
-  | FormFieldValidatorMax<string>;
+  | FormFieldValidatorCommon<Date>
+  | FormFieldValidatorMin<Date | string>
+  | FormFieldValidatorMax<Date | string>;
 
 export type FormFieldValidatorFile =
   | FormFieldValidatorCommon<File>
