@@ -58,6 +58,7 @@
   ],
   "packageManager": "yarn@3.2.3",
   "dependencies": {
+    "@heetch/flamingo-react": "^5.1.0",
     "core-js": "^3.6.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
