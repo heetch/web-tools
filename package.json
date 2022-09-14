@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "react-forms:storybook": "nx storybook react-forms",
-    "react-forms:gen:component": "nx g c --project react-forms --style styled-components --export true --flat"
+    "react-forms:gen:stories": "nx g @nrwl/react:stories --project react-forms --generateCypressSpecs false",
+    "react-forms:gen:component": "nx g c --project react-forms --style styled-components --export true"
   },
   "devDependencies": {
     "@babel/core": "7.12.13",
