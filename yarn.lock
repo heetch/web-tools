@@ -1796,6 +1796,7 @@ __metadata:
     "@nrwl/storybook": ^14.7.5
     "@nrwl/web": 14.7.5
     "@nrwl/workspace": 14.7.5
+    "@storybook/addon-actions": ^6.5.12
     "@storybook/addon-essentials": ~6.5.9
     "@storybook/builder-webpack5": ~6.5.9
     "@storybook/core-server": ~6.5.9
@@ -2924,7 +2925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-actions@npm:6.5.12":
+"@storybook/addon-actions@npm:6.5.12, @storybook/addon-actions@npm:^6.5.12":
   version: 6.5.12
   resolution: "@storybook/addon-actions@npm:6.5.12"
   dependencies:
