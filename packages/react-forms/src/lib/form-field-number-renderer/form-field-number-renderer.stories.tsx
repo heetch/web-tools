@@ -14,41 +14,57 @@ export default {
   argTypes: {
     control: { table: { disable: true } },
   },
-  decorators: [
-    (Story) => {
-      const { control, getValues, handleSubmit, watch } = useForm({
-        mode: 'onChange',
-      });
-      const onChange = action('form-values-change');
-
-      const watchForm = watch();
-      useEffect(() => {
-        onChange(getValues());
-      }, [watchForm, onChange, getValues]);
-
-      const onSubmit = action('form-submit');
-
-      return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Story control={control} />
-        </form>
-      );
-    },
-  ],
+  // decorators: [
+  //   (Story) => {
+  //     const { control, getValues, handleSubmit, watch } = useForm({
+  //       mode: 'onChange',
+  //     });
+  //     const onChange = action('form-values-change');
+  //
+  //     const watchForm = watch();
+  //     useEffect(() => {
+  //       onChange(getValues());
+  //     }, [watchForm, onChange, getValues]);
+  //
+  //     const onSubmit = action('form-submit');
+  //
+  //     return (
+  //       <form onSubmit={handleSubmit(onSubmit)}>
+  //         <Story control={control} />
+  //       </form>
+  //     );
+  //   },
+  // ],
 } as ComponentMeta<typeof FormFieldNumberRenderer>;
 
-const Template: ComponentStory<typeof FormFieldNumberRenderer> = (
-  { field, options },
-  { control }
-) => (
-  <div style={{ maxWidth: 300 }}>
-    <FormFieldNumberRenderer
-      control={control}
-      field={field}
-      options={options}
-    />
-  </div>
-);
+const Template: ComponentStory<typeof FormFieldNumberRenderer> = ({
+  field,
+  options,
+}) =>
+  // { control }
+  {
+    const { control, getValues, handleSubmit, watch } = useForm({
+      mode: 'onChange',
+    });
+    const onChange = action('form-values-change');
+
+    const watchForm = watch();
+    useEffect(() => {
+      onChange(getValues());
+    }, [watchForm, onChange, getValues]);
+
+    const onSubmit = action('form-submit');
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: 300 }}>
+        <FormFieldNumberRenderer
+          control={control}
+          field={field}
+          options={options}
+        />
+      </form>
+    );
+  };
 
 const base: FormFieldNumber = {
   id: 'number',

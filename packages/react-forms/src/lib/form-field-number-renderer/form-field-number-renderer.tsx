@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from 'react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 import { InputField } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
@@ -38,14 +39,16 @@ export function FormFieldNumberRenderer({
 
       return acc;
     },
-    field.format === 'integer'
-      ? {
-          validate: {
-            // number: (value) => !isNaN(Number(value)),
-            integer: (value) => Number.isInteger(Number(value)),
-          },
-        }
-      : {}
+    {
+      validate:
+        field.format === 'integer'
+          ? {
+              integer: (value: number) => Number.isInteger(value),
+            }
+          : {
+              number: (value: number) => !isNaN(value),
+            },
+    }
   );
 
   return (
@@ -54,8 +57,21 @@ export function FormFieldNumberRenderer({
       name={field.id}
       rules={rules}
       render={({ field: fieldProps, fieldState }) => {
+        const [value, setValue] = useState(
+          fieldProps.value !== undefined ? fieldProps.value : ''
+        );
+
+        const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+          fieldProps.onChange(
+            e.target.value === '' ? undefined : parseFloat(e.target.value)
+          );
+          setValue(e.target.value);
+        };
+
         const props = {
           ...fieldProps,
+          onChange,
+          value,
           id: fieldProps.name,
           label: options?.showLabelsAsPlaceholders ? undefined : field.label,
           placeholder: options?.showLabelsAsPlaceholders
