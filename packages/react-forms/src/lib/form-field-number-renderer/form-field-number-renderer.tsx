@@ -1,15 +1,23 @@
-import { Checkbox, Toggle } from '@heetch/flamingo-react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldValue, UseControllerProps } from 'react-hook-form';
+import { InputField } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
-import { FormFieldBoolean } from '../../types/fields';
+import { FormFieldNumber } from '../../types/fields';
 
-export function FormFieldBooleanRenderer({
+export function FormFieldNumberRenderer({
   field,
   control,
-}: FormFieldRendererProps<FormFieldBoolean>) {
+}: FormFieldRendererProps<FormFieldNumber>) {
   const rules = (field.validators || []).reduce<UseControllerProps['rules']>(
     (acc, cur) => {
       switch (cur.type) {
+        case 'min':
+        case 'max':
+          return {
+            ...acc,
+            [cur.type]: cur.error_message
+              ? { value: cur.parameter, message: cur.error_message }
+              : cur.parameter,
+          };
         case 'required':
           return {
             ...acc,
@@ -29,8 +37,19 @@ export function FormFieldBooleanRenderer({
 
       return acc;
     },
-    {}
+    field.format === 'integer'
+      ? {
+          validate: {
+            // number: (value) => !isNaN(Number(value)),
+            integer: (value) => Number.isInteger(Number(value)),
+          },
+        }
+      : {}
   );
+
+  if (field.format === 'integer') {
+    rules;
+  }
 
   return (
     <Controller
@@ -41,20 +60,15 @@ export function FormFieldBooleanRenderer({
         const props = {
           ...fieldProps,
           id: fieldProps.name,
-          value: fieldProps.value ? 'checked' : '',
-          checked: fieldProps.value,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
+          type: 'number',
         };
 
-        return field.format === 'toggle' ? (
-          <Toggle {...props}>{field.label}</Toggle>
-        ) : (
-          <Checkbox {...props}>{field.label}</Checkbox>
-        );
+        return <InputField {...props} />;
       }}
     />
   );
 }
 
-export default FormFieldBooleanRenderer;
+export default FormFieldNumberRenderer;
