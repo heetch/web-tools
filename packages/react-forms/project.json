@@ -31,10 +31,22 @@
         "lintFilePatterns": ["packages/react-forms/**/*.{ts,tsx,js,jsx}"]
       }
     },
+    "test-jest": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/react-forms"],
+      "options": {
+        "jestConfig": "packages/react-forms/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400"
+        "commands": [
+          "test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400",
+          "nx test-jest react-forms"
+        ],
+        "parallel": false
       }
     },
     "storybook": {
