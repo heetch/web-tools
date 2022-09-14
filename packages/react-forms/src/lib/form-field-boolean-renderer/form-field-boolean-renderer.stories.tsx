@@ -24,9 +24,9 @@ export default {
       const watchForm = watch();
       useEffect(() => {
         onChange(getValues());
-      }, [watchForm, onChange]);
+      }, [watchForm, onChange, getValues]);
 
-      const onSubmit = console.log;
+      const onSubmit = action('form-submit');
 
       return (
         <form onSubmit={handleSubmit(onSubmit)}>

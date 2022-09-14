@@ -27,16 +27,32 @@
       "rules": {}
     },
     {
+      "files": ["*.stories.ts", "*.stories.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": 0
+      }
+    },
+    {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
+    },
+    {
+      "files": ["*.stories.js", "*.stories.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": 0
+      }
     },
     {
       "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
       "env": {
         "jest": true
       },
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": 0
+      }
     }
   ]
 }
