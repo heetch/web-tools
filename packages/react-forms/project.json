@@ -32,11 +32,9 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/react-forms"],
+      "executor": "nx:run-commands",
       "options": {
-        "jestConfig": "packages/react-forms/jest.config.ts",
-        "passWithNoTests": true
+        "command": "test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400"
       }
     },
     "storybook": {

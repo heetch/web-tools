@@ -2,8 +2,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { expect } from '@storybook/jest';
+import { screen, userEvent, within } from '@storybook/testing-library';
 import { FormFieldBooleanRenderer } from './form-field-boolean-renderer';
 import { FormFieldBoolean } from '../../types/fields';
+import { sleep } from '../../utils';
 
 export default {
   component: FormFieldBooleanRenderer,
@@ -88,4 +91,25 @@ Validation.args = {
       },
     ],
   } as FormFieldBoolean,
+};
+
+export const _tests = Template.bind({});
+_tests.storyName = '[tests]';
+_tests.args = {
+  field: base,
+};
+_tests.play = async () => {
+  const cb = screen.getByLabelText('As checkbox', { selector: 'input' });
+  expect(cb).not.toBeChecked();
+  await userEvent.click(cb);
+  expect(cb).toBeChecked();
+
+  const tg = within(screen.getByText('As toggle').parentElement!).getByRole(
+    'button',
+    {}
+  );
+  expect(tg).toHaveTextContent('OFF');
+  await sleep(100);
+  await userEvent.click(tg);
+  expect(tg).toHaveTextContent('ON');
 };
