@@ -1,4 +1,4 @@
-import { FormField } from '@/types/fields';
+import { FormField } from './types/fields';
 import {
   FormFieldValidatorBoolean,
   FormFieldValidatorDate,
@@ -6,7 +6,13 @@ import {
   FormFieldValidatorNumber,
   FormFieldValidatorString,
   ValidationRules,
-} from '@/types/validators';
+} from './types/validators';
+
+export const EMAIL_REGEX =
+  /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+
+export const UUID_REGEX =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,14 +26,16 @@ export function buildValidationRules(field: FormField): ValidationRules {
       return buildValidationRulesNumber(field.validators || []);
     case 'file':
       return buildValidationRulesFile(field.validators || []);
+    case 'date':
+      return buildValidationRulesDate(field.validators || []);
     case 'string':
-      return ['date', 'date-time'].includes(field.format)
-        ? buildValidationRulesDate((field.validators || []) as FormFieldValidatorDate[])
-        : buildValidationRulesString((field.validators || []) as FormFieldValidatorString[]);
+      return buildValidationRulesString(field.validators || []);
   }
 }
 
-function buildValidationRulesBoolean(validators: FormFieldValidatorBoolean[]): ValidationRules {
+function buildValidationRulesBoolean(
+  validators: FormFieldValidatorBoolean[]
+): ValidationRules {
   return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       case 'required':
@@ -47,8 +55,9 @@ function buildValidationRulesBoolean(validators: FormFieldValidatorBoolean[]): V
   }, {});
 }
 
-
-function buildValidationRulesNumber(validators: FormFieldValidatorNumber[]): ValidationRules {
+function buildValidationRulesNumber(
+  validators: FormFieldValidatorNumber[]
+): ValidationRules {
   return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       default:
@@ -58,8 +67,10 @@ function buildValidationRulesNumber(validators: FormFieldValidatorNumber[]): Val
   }, {});
 }
 
-function buildValidationRulesFile(validators: FormFieldValidatorFile[]): ValidationRules {
-    return validators.reduce<ValidationRules>((acc, cur) => {
+function buildValidationRulesFile(
+  validators: FormFieldValidatorFile[]
+): ValidationRules {
+  return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       default:
         break;
@@ -68,8 +79,10 @@ function buildValidationRulesFile(validators: FormFieldValidatorFile[]): Validat
   }, {});
 }
 
-function buildValidationRulesDate(validators: FormFieldValidatorDate[]): ValidationRules {
-    return validators.reduce<ValidationRules>((acc, cur) => {
+function buildValidationRulesDate(
+  validators: FormFieldValidatorDate[]
+): ValidationRules {
+  return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       default:
         break;
@@ -78,8 +91,10 @@ function buildValidationRulesDate(validators: FormFieldValidatorDate[]): Validat
   }, {});
 }
 
-function buildValidationRulesString(validators: FormFieldValidatorString[]): ValidationRules {
-    return validators.reduce<ValidationRules>((acc, cur) => {
+function buildValidationRulesString(
+  validators: FormFieldValidatorString[]
+): ValidationRules {
+  return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       default:
         break;
