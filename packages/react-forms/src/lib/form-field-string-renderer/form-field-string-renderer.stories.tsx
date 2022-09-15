@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useForm } from 'react-hook-form';
 import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 import { useEffect } from 'react';
 import { FormFieldStringRenderer } from './form-field-string-renderer';
 import { FormFieldString } from '../../types/fields';
@@ -19,31 +19,29 @@ export default {
 const Template: ComponentStory<typeof FormFieldStringRenderer> = ({
   field,
   options,
-}) =>
-  // { control }
-  {
-    const { control, getValues, handleSubmit, watch } = useForm({
-      mode: 'onChange',
-    });
-    const onChange = action('form-values-change');
+}) => {
+  const { control, getValues, handleSubmit, watch } = useForm({
+    mode: 'onChange',
+  });
+  const onChange = action('form-values-change');
 
-    const watchForm = watch();
-    useEffect(() => {
-      onChange(getValues());
-    }, [watchForm, onChange, getValues]);
+  const watchForm = watch();
+  useEffect(() => {
+    onChange(getValues());
+  }, [watchForm, onChange, getValues]);
 
-    const onSubmit = action('form-submit');
+  const onSubmit = action('form-submit');
 
-    return (
-      <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: 400 }}>
-        <FormFieldStringRenderer
-          control={control}
-          field={field}
-          options={options}
-        />
-      </form>
-    );
-  };
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: 400 }}>
+      <FormFieldStringRenderer
+        control={control}
+        field={field}
+        options={options}
+      />
+    </form>
+  );
+};
 
 const base: FormFieldString = {
   id: 'string',

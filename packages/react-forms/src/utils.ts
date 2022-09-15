@@ -1,6 +1,8 @@
-import { FormField } from './types/fields';
+import { FormField, FormFieldNumber, FormFieldString } from './types/fields';
 import {
+  FormFieldValidator,
   FormFieldValidatorBoolean,
+  FormFieldValidatorCommon,
   FormFieldValidatorDate,
   FormFieldValidatorFile,
   FormFieldValidatorNumber,
@@ -19,22 +21,31 @@ export function sleep(ms: number) {
 }
 
 export function buildValidationRules(field: FormField): ValidationRules {
+  const validators = field.validators || [];
   switch (field.type) {
     case 'boolean':
-      return buildValidationRulesBoolean(field.validators || []);
+      return buildValidationRulesBoolean(
+        validators as FormFieldValidatorBoolean[]
+      );
     case 'number':
-      return buildValidationRulesNumber(field.validators || []);
+      return buildValidationRulesNumber(
+        validators as FormFieldValidatorNumber[],
+        field.format
+      );
     case 'file':
-      return buildValidationRulesFile(field.validators || []);
+      return buildValidationRulesFile(validators as FormFieldValidatorFile[]);
     case 'date':
-      return buildValidationRulesDate(field.validators || []);
+      return buildValidationRulesDate(validators as FormFieldValidatorDate[]);
     case 'string':
-      return buildValidationRulesString(field.validators || []);
+      return buildValidationRulesString(
+        validators as FormFieldValidatorString[],
+        field.format
+      );
   }
 }
 
-function buildValidationRulesBoolean(
-  validators: FormFieldValidatorBoolean[]
+function buildValidationRulesCommon<T>(
+  validators: FormFieldValidatorCommon<T>[]
 ): ValidationRules {
   return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
@@ -48,57 +59,182 @@ function buildValidationRulesBoolean(
       case 'function':
         return {
           ...acc,
-          validate: cur.parameter,
+          validate: {
+            ...(acc?.validate || {}),
+            [cur.name || 'custom']: cur.parameter,
+          },
         };
     }
     return acc;
   }, {});
 }
 
-function buildValidationRulesNumber(
-  validators: FormFieldValidatorNumber[]
+function buildValidationRulesBoolean(
+  validators: FormFieldValidatorBoolean[]
 ): ValidationRules {
-  return validators.reduce<ValidationRules>((acc, cur) => {
+  return buildValidationRulesCommon<boolean>(validators);
+}
+
+function buildValidationRulesNumber(
+  validators: FormFieldValidatorNumber[],
+  format: FormFieldNumber['format']
+): ValidationRules {
+  const { common, other } = extractCommonValidators<number>(validators);
+
+  let baseRules = buildValidationRulesCommon<number>(common);
+  if (format === 'integer') {
+    baseRules = {
+      ...(baseRules || {}),
+      validate: {
+        ...(baseRules?.validate || {}),
+        integer: (value: number) => Number.isInteger(value),
+      },
+    };
+  } else {
+    baseRules = {
+      ...(baseRules || {}),
+      validate: {
+        ...(baseRules?.validate || {}),
+        number: (value: number) => !isNaN(value),
+      },
+    };
+  }
+
+  return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
+      case 'min':
+      case 'max':
+        return {
+          ...acc,
+          [cur.type]: cur.error_message
+            ? { value: cur.parameter, message: cur.error_message }
+            : cur.parameter,
+        };
       default:
-        break;
+        return acc;
     }
-    return acc;
-  }, {});
+  }, baseRules);
 }
 
 function buildValidationRulesFile(
   validators: FormFieldValidatorFile[]
 ): ValidationRules {
-  return validators.reduce<ValidationRules>((acc, cur) => {
+  const { common, other } = extractCommonValidators<File>(validators);
+  return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
+      case 'max_size':
+        return {
+          ...acc,
+          validate: {
+            ...(acc?.validate || {}),
+            file_max_size: (file: File) => {
+              const valid = file.size * 1000 <= cur.parameter;
+              return valid || cur.error_message || false;
+            },
+          },
+        };
       default:
-        break;
+        return acc;
     }
-    return acc;
-  }, {});
+  }, buildValidationRulesCommon<File>(common));
 }
 
 function buildValidationRulesDate(
   validators: FormFieldValidatorDate[]
 ): ValidationRules {
-  return validators.reduce<ValidationRules>((acc, cur) => {
+  const { common, other } = extractCommonValidators<Date>(validators);
+  return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
+      case 'min':
+      case 'max':
+        const parameter =
+          cur.parameter instanceof Date
+            ? cur.parameter
+            : new Date(cur.parameter);
+
+        return {
+          ...acc,
+          [cur.type]: cur.error_message
+            ? { value: parameter, message: cur.error_message }
+            : parameter,
+        };
       default:
-        break;
+        return acc;
     }
-    return acc;
-  }, {});
+  }, buildValidationRulesCommon<Date>(common));
 }
 
 function buildValidationRulesString(
-  validators: FormFieldValidatorString[]
+  validators: FormFieldValidatorString[],
+  format: FormFieldString['format']
 ): ValidationRules {
-  return validators.reduce<ValidationRules>((acc, cur) => {
+  const { common, other } = extractCommonValidators<string>(validators);
+
+  let baseRules = buildValidationRulesCommon<string>(common);
+  if (format === 'uuid') {
+    baseRules = {
+      ...(baseRules || {}),
+      validate: {
+        ...(baseRules?.validate || {}),
+        uuid: (value) => UUID_REGEX.test(value),
+      },
+    };
+  }
+  if (format === 'email') {
+    baseRules = {
+      ...(baseRules || {}),
+      validate: {
+        ...(baseRules?.validate || {}),
+        email: (value) => EMAIL_REGEX.test(value),
+      },
+    };
+  }
+
+  return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
+      case 'max_size':
+        return {
+          ...acc,
+          maxLength: cur.error_message
+            ? { value: cur.parameter, message: cur.error_message }
+            : cur.parameter,
+        };
+      case 'regex':
+        const re =
+          cur.parameter instanceof RegExp
+            ? cur.parameter
+            : new RegExp(cur.parameter);
+        return {
+          ...acc,
+          pattern: cur.error_message
+            ? { value: re, message: cur.error_message }
+            : re,
+        };
       default:
-        break;
+        return acc;
     }
-    return acc;
-  }, {});
+  }, baseRules);
+}
+
+function extractCommonValidators<
+  T,
+  K = Exclude<FormFieldValidator, FormFieldValidatorCommon<T>>
+>(
+  validators: FormFieldValidator[]
+): {
+  common: FormFieldValidatorCommon<T>[];
+  other: K[];
+} {
+  const common: FormFieldValidatorCommon<T>[] = [];
+  const other: K[] = [];
+
+  validators.forEach((validator) => {
+    if (validator.type === 'required' || validator.type === 'function') {
+      common.push(validator as FormFieldValidatorCommon<T>);
+    } else {
+      other.push(validator as K);
+    }
+  });
+
+  return { common, other };
 }

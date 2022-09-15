@@ -31,7 +31,14 @@ export type FormFieldValidatorType =
   | 'max'
   | 'function';
 
-type FormFieldValidatorCommon<T> =
+export type FormFieldValidator =
+  | FormFieldValidatorBoolean
+  | FormFieldValidatorString
+  | FormFieldValidatorNumber
+  | FormFieldValidatorDate
+  | FormFieldValidatorFile;
+
+export type FormFieldValidatorCommon<T> =
   | FormFieldValidatorRequired
   | FormFieldValidatorFunction<T>;
 

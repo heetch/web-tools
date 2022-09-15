@@ -2,35 +2,13 @@ import { Checkbox, Toggle } from '@heetch/flamingo-react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldBoolean } from '../../types/fields';
+import { buildValidationRules } from '../../utils';
 
 export function FormFieldBooleanRenderer({
   field,
   control,
 }: FormFieldRendererProps<FormFieldBoolean>) {
-  const rules = (field.validators || []).reduce<UseControllerProps['rules']>(
-    (acc, cur) => {
-      switch (cur.type) {
-        case 'required':
-          return {
-            ...acc,
-            required: cur.error_message
-              ? { value: true, message: cur.error_message }
-              : true,
-          };
-        case 'function':
-          return {
-            ...acc,
-            validate: {
-              ...(acc?.validate || {}),
-              [cur.name || 'custom']: cur.parameter,
-            },
-          };
-      }
-
-      return acc;
-    },
-    {}
-  );
+  const rules = buildValidationRules(field);
 
   return (
     <Controller

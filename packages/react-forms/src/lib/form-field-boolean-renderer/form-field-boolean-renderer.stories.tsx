@@ -14,55 +14,50 @@ export default {
   argTypes: {
     control: { table: { disable: true } },
   },
-  decorators: [
-    (Story) => {
-      const { control, getValues, handleSubmit, watch } = useForm({
-        mode: 'onChange',
-      });
-      const onChange = action('form-values-change');
-
-      const watchForm = watch();
-      useEffect(() => {
-        onChange(getValues());
-      }, [watchForm, onChange, getValues]);
-
-      const onSubmit = action('form-submit');
-
-      return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Story control={control} />
-        </form>
-      );
-    },
-  ],
 } as ComponentMeta<typeof FormFieldBooleanRenderer>;
 
-const Template: ComponentStory<typeof FormFieldBooleanRenderer> = (
-  { field },
-  { control }
-) => (
-  <>
-    <FormFieldBooleanRenderer
-      control={control}
-      field={{
-        ...field,
-        id: 'as-checkbox',
-        format: 'checkbox',
-        label: 'As checkbox',
-      }}
-    />
-    <br />
-    <FormFieldBooleanRenderer
-      control={control}
-      field={{
-        ...field,
-        id: 'as-toggle',
-        format: 'toggle',
-        label: 'As toggle',
-      }}
-    />
-  </>
-);
+const Template: ComponentStory<typeof FormFieldBooleanRenderer> = ({
+  field,
+  options,
+}) => {
+  const { control, getValues, handleSubmit, watch } = useForm({
+    mode: 'onChange',
+  });
+  const onChange = action('form-values-change');
+
+  const watchForm = watch();
+  useEffect(() => {
+    onChange(getValues());
+  }, [watchForm, onChange, getValues]);
+
+  const onSubmit = action('form-submit');
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: 300 }}>
+      <FormFieldBooleanRenderer
+        control={control}
+        field={{
+          ...field,
+          id: 'as-checkbox',
+          format: 'checkbox',
+          label: 'As checkbox',
+        }}
+        options={options}
+      />
+      <br />
+      <FormFieldBooleanRenderer
+        control={control}
+        field={{
+          ...field,
+          id: 'as-toggle',
+          format: 'toggle',
+          label: 'As toggle',
+        }}
+        options={options}
+      />
+    </form>
+  );
+};
 
 const base: FormFieldBoolean = {
   id: 'boolean',
