@@ -16,4 +16,5 @@ export type Form<
 
 export type FormOptions = {
   showLabelsAsPlaceholders?: boolean;
+  iconColor?: string;
 };

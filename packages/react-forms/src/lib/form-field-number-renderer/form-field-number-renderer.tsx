@@ -48,5 +48,3 @@ export function FormFieldNumberRenderer({
     />
   );
 }
-
-export default FormFieldNumberRenderer;

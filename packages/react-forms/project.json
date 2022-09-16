@@ -15,6 +15,7 @@
         "external": ["react/jsx-runtime"],
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "compiler": "babel",
+        "extractCss": "style.css",
         "assets": [
           {
             "glob": "packages/react-forms/README.md",

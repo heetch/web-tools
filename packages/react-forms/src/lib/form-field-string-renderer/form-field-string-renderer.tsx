@@ -41,5 +41,3 @@ export function FormFieldStringRenderer({
     />
   );
 }
-
-export default FormFieldStringRenderer;

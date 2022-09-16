@@ -1,1 +1,1 @@
-import '@heetch/flamingo-react/dist/styles.css';
+import '../src/style.css';
