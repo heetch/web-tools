@@ -3,7 +3,12 @@ import { Controller } from 'react-hook-form';
 import { InputField } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldNumber } from '../../types/fields';
-import { buildValidationRules } from '../../utils';
+import { buildValidationRules, isRequired } from '../../utils';
+import {
+  FormFieldValidatorCommon,
+  FormFieldValidatorDate,
+  FormFieldValidatorNumber,
+} from '../../types/validators';
 
 export function FormFieldNumberRenderer({
   field,
@@ -11,6 +16,7 @@ export function FormFieldNumberRenderer({
   options,
 }: FormFieldRendererProps<FormFieldNumber>) {
   const rules = buildValidationRules(field);
+  const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (
     <Controller
@@ -29,18 +35,41 @@ export function FormFieldNumberRenderer({
           setValue(e.target.value);
         };
 
+        let label: string | undefined =
+          field.label + (showAsterisk ? ' *' : '');
+        let placeholder: string | undefined = field.placeholder;
+        if (options?.showLabelsAsPlaceholders) {
+          placeholder = label;
+          label = undefined;
+        }
+
+        type MinMaxValidator = Exclude<
+          FormFieldValidatorNumber,
+          FormFieldValidatorCommon<number>
+        >;
+        const min = (
+          field.validators?.find((v) => v.type === 'min') as
+            | MinMaxValidator
+            | undefined
+        )?.parameter;
+        const max = (
+          field.validators?.find((v) => v.type === 'max') as
+            | MinMaxValidator
+            | undefined
+        )?.parameter;
+
         const props = {
           ...fieldProps,
           onChange,
           value,
           id: fieldProps.name,
-          label: options?.showLabelsAsPlaceholders ? undefined : field.label,
-          placeholder: options?.showLabelsAsPlaceholders
-            ? field.label
-            : field.placeholder,
+          label,
+          placeholder,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
           type: 'number',
+          min,
+          max,
         };
 
         return <InputField {...props} />;

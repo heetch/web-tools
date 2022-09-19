@@ -8,7 +8,11 @@ import {
 import { useWindowWidth } from '@react-hook/window-size';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldDate } from '../../types/fields';
-import { buildValidationRules, MOBILE_BREAKPOINT } from '../../utils';
+import {
+  buildValidationRules,
+  isRequired,
+  MOBILE_BREAKPOINT,
+} from '../../utils';
 import { ErrorHelper } from '../styled-components';
 import {
   FormFieldValidatorCommon,
@@ -21,6 +25,7 @@ export function FormFieldDateRenderer({
   options,
 }: FormFieldRendererProps<FormFieldDate>) {
   const rules = buildValidationRules(field);
+  const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (
     <Controller
@@ -30,19 +35,21 @@ export function FormFieldDateRenderer({
       render={({ field: fieldProps, fieldState }) => {
         const vpWidth = useWindowWidth();
 
+        let label: string | undefined =
+          field.label + (showAsterisk ? ' *' : '');
+        let placeholder: string | undefined = field.placeholder;
+        if (options?.showLabelsAsPlaceholders) {
+          placeholder = label;
+          label = undefined;
+        }
+
         const props = {
           ...fieldProps,
           id: fieldProps.name,
           value: fieldProps.value !== undefined ? fieldProps.value : '',
-          placeholder: options?.showLabelsAsPlaceholders
-            ? field.label
-            : field.placeholder || '',
+          placeholder: placeholder || '',
           invalid: !!fieldState?.error,
         };
-
-        const label = options?.showLabelsAsPlaceholders
-          ? undefined
-          : field.label;
 
         const helper = fieldState?.error ? undefined : field.helper;
 
@@ -80,6 +87,8 @@ export function FormFieldDateRenderer({
               minDate={minDate}
               maxDate={maxDate}
               showTimeSelect={field.format === 'date-time'}
+              showMonthDropdown={field.yearSelector}
+              showYearDropdown={field.yearSelector}
               timeFormat="HH:mm"
             />
             {helper && <Helper>{helper}</Helper>}

@@ -55,6 +55,7 @@ export type FormFieldFile<K extends string = string> = FormField_<'file', K> & {
 
 export type FormFieldDate<K extends string = string> = FormField_<'date', K> & {
   format: 'date' | 'date-time';
+  yearSelector?: boolean;
   validators?: FormFieldValidatorDate[];
 };
 

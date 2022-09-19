@@ -2,6 +2,12 @@ import styled, { css } from 'styled-components';
 import { FormCell } from '@heetch/react-forms';
 import { PropsWithChildren } from 'react';
 
+export const FormLayout = styled.form`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+`;
+
 export const FormLayoutRow = styled.div`
   display: flex;
   gap: 8px;

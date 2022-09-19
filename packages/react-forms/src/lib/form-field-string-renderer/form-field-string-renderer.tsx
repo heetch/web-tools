@@ -2,7 +2,7 @@ import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldString } from '../../types/fields';
 import { Controller } from 'react-hook-form';
 import { InputField, SelectField, TextareaField } from '@heetch/flamingo-react';
-import { buildValidationRules } from '../../utils';
+import { buildValidationRules, isRequired } from '../../utils';
 
 export function FormFieldStringRenderer({
   field,
@@ -10,6 +10,7 @@ export function FormFieldStringRenderer({
   options,
 }: FormFieldRendererProps<FormFieldString>) {
   const rules = buildValidationRules(field);
+  const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (
     <Controller
@@ -17,14 +18,20 @@ export function FormFieldStringRenderer({
       name={field.id}
       rules={rules}
       render={({ field: fieldProps, fieldState }) => {
+        let label: string | undefined =
+          field.label + (showAsterisk ? ' *' : '');
+        let placeholder: string = field.placeholder || '-';
+        if (options?.showLabelsAsPlaceholders) {
+          placeholder = label;
+          label = undefined;
+        }
+
         const props = {
           ...fieldProps,
           id: fieldProps.name,
           value: fieldProps.value !== undefined ? fieldProps.value : '',
-          label: options?.showLabelsAsPlaceholders ? undefined : field.label,
-          placeholder: options?.showLabelsAsPlaceholders
-            ? field.label
-            : field.placeholder,
+          label,
+          placeholder,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
         };

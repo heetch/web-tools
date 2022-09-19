@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldFile } from '../../types/fields';
-import { buildValidationRules } from '../../utils';
+import { buildValidationRules, isRequired } from '../../utils';
 import { Controller } from 'react-hook-form';
 import {
   Button,
@@ -63,6 +63,7 @@ export function FormFieldFileRenderer({
   options,
 }: FormFieldRendererProps<FormFieldFile>) {
   const rules = buildValidationRules(field);
+  const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (
     <Controller
@@ -72,13 +73,13 @@ export function FormFieldFileRenderer({
       render={({ field: fieldProps, fieldState }) => {
         const fileInputRef = useRef<HTMLInputElement>(null);
 
-        const label = options?.showLabelsAsPlaceholders
-          ? undefined
-          : field.label;
-
-        const placeholder = options?.showLabelsAsPlaceholders
-          ? field.label
-          : field.placeholder;
+        let label: string | undefined =
+          field.label + (showAsterisk ? ' *' : '');
+        let placeholder: string | undefined = field.placeholder;
+        if (options?.showLabelsAsPlaceholders) {
+          placeholder = label;
+          label = undefined;
+        }
 
         const helper = fieldState?.error ? undefined : field.helper;
 
@@ -144,5 +145,3 @@ export function FormFieldFileRenderer({
     />
   );
 }
-
-export default FormFieldFileRenderer;

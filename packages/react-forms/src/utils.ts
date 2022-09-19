@@ -22,6 +22,10 @@ export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export function isRequired(field: FormField): boolean {
+  return field.validators?.some(({ type }) => type === 'required') || false;
+}
+
 export function buildValidationRules(field: FormField): ValidationRules {
   const validators = field.validators || [];
   switch (field.type) {
