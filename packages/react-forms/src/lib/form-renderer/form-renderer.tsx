@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { Button } from '@heetch/flamingo-react';
-import { Form } from '../../types/forms';
+import { DefaultTexts, Form, FormOptions } from '../../types/forms';
 import { FormFieldBooleanRenderer } from '../form-field-boolean-renderer/form-field-boolean-renderer';
 import { FormFieldNumberRenderer } from '../form-field-number-renderer/form-field-number-renderer';
 import { FormFieldFileRenderer } from '../form-field-file-renderer/form-field-file-renderer';
@@ -12,12 +12,14 @@ import {
   FormLayoutCell,
   FormLayoutRow,
 } from '../form-layout/form-layout';
+import { DEFAULT_TEXTS, injectDefaultTexts } from '../../utils';
 
 export function FormRenderer({
   fields,
   values,
   onSubmit,
   options,
+  texts: textsOverrides,
   layout,
 }: Form) {
   const { control, handleSubmit, formState } = useForm({
@@ -28,13 +30,50 @@ export function FormRenderer({
   const formLayout: FormRow[] =
     layout || fields.map((field) => ({ cells: [{ field: field.id }] }));
 
+  const texts: DefaultTexts = {
+    submit: textsOverrides?.submit || DEFAULT_TEXTS.submit,
+    errors: {
+      required:
+        textsOverrides?.errors?.required || DEFAULT_TEXTS.errors?.required,
+      regex: textsOverrides?.errors?.regex || DEFAULT_TEXTS.errors?.regex,
+      max_size: {
+        string:
+          textsOverrides?.errors?.max_size?.string ||
+          DEFAULT_TEXTS.errors?.max_size?.string,
+        file:
+          textsOverrides?.errors?.max_size?.file ||
+          DEFAULT_TEXTS.errors?.max_size?.file,
+      },
+      min: {
+        number:
+          textsOverrides?.errors?.min?.number ||
+          DEFAULT_TEXTS.errors?.min?.number,
+        date:
+          textsOverrides?.errors?.min?.date || DEFAULT_TEXTS.errors?.min?.date,
+      },
+      max: {
+        number:
+          textsOverrides?.errors?.max?.number ||
+          DEFAULT_TEXTS.errors?.max?.number,
+        date:
+          textsOverrides?.errors?.max?.date || DEFAULT_TEXTS.errors?.max?.date,
+      },
+      email: textsOverrides?.errors?.email || DEFAULT_TEXTS.errors?.email,
+      number: textsOverrides?.errors?.number || DEFAULT_TEXTS.errors?.number,
+      integer: textsOverrides?.errors?.integer || DEFAULT_TEXTS.errors?.integer,
+      uuid: textsOverrides?.errors?.uuid || DEFAULT_TEXTS.errors?.uuid,
+    },
+  };
+
   return (
     <FormLayout onSubmit={handleSubmit(onSubmit)}>
       {formLayout.map((row, rowIndex) => (
         <FormLayoutRow key={'row-' + rowIndex}>
           {row.cells.map((cell) => {
-            const field = fields.find((f) => f.id === cell.field);
+            let field = fields.find((f) => f.id === cell.field);
             if (!field) return null;
+
+            field = injectDefaultTexts(texts, field);
 
             let Renderer = null;
             switch (field.type) {
@@ -43,6 +82,7 @@ export function FormRenderer({
                   <FormFieldBooleanRenderer
                     field={field}
                     options={options}
+                    texts={texts}
                     control={control}
                   />
                 );
@@ -52,6 +92,7 @@ export function FormRenderer({
                   <FormFieldNumberRenderer
                     field={field}
                     options={options}
+                    texts={texts}
                     control={control}
                   />
                 );
@@ -61,6 +102,7 @@ export function FormRenderer({
                   <FormFieldFileRenderer
                     field={field}
                     options={options}
+                    texts={texts}
                     control={control}
                   />
                 );
@@ -70,6 +112,7 @@ export function FormRenderer({
                   <FormFieldStringRenderer
                     field={field}
                     options={options}
+                    texts={texts}
                     control={control}
                   />
                 );
@@ -79,6 +122,7 @@ export function FormRenderer({
                   <FormFieldDateRenderer
                     field={field}
                     options={options}
+                    texts={texts}
                     control={control}
                   />
                 );
@@ -100,7 +144,7 @@ export function FormRenderer({
             disabled={!formState.isValid}
             isLoading={formState.isSubmitting}
           >
-            Submit
+            {texts?.submit}
           </Button>
         </FormLayoutCell>
       </FormLayoutRow>

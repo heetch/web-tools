@@ -13,10 +13,35 @@ export type Form<
   validators?: FormValidator<V>[];
   layout?: FormRow<K>[];
   options?: FormOptions;
+  texts?: DefaultTexts;
 };
 
 export type FormOptions = {
   showLabelsAsPlaceholders?: boolean;
   iconColor?: string;
   showRequiredAsterisk?: boolean;
+};
+
+export type DefaultTexts = {
+  submit?: string;
+  errors?: {
+    required?: string;
+    regex?: string;
+    max_size?: {
+      string?: (size: number) => string;
+      file?: (size: number) => string;
+    };
+    min?: {
+      number?: (min: number) => string;
+      date?: (min: Date) => string;
+    };
+    max?: {
+      number?: (min: number) => string;
+      date?: (min: Date) => string;
+    };
+    integer?: string;
+    number?: string;
+    uuid?: string;
+    email?: string;
+  };
 };

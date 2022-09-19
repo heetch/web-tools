@@ -8,8 +8,9 @@ export function FormFieldStringRenderer({
   field,
   control,
   options,
+  texts,
 }: FormFieldRendererProps<FormFieldString>) {
-  const rules = buildValidationRules(field);
+  const rules = buildValidationRules(field, texts);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (
@@ -20,7 +21,8 @@ export function FormFieldStringRenderer({
       render={({ field: fieldProps, fieldState }) => {
         let label: string | undefined =
           field.label + (showAsterisk ? ' *' : '');
-        let placeholder: string = field.placeholder || '-';
+        let placeholder: string | undefined =
+          field.placeholder || (field.format === 'select' ? '-' : undefined);
         if (options?.showLabelsAsPlaceholders) {
           placeholder = label;
           label = undefined;

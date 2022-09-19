@@ -14,8 +14,9 @@ export function FormFieldNumberRenderer({
   field,
   control,
   options,
+  texts,
 }: FormFieldRendererProps<FormFieldNumber>) {
-  const rules = buildValidationRules(field);
+  const rules = buildValidationRules(field, texts);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (

@@ -2,6 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { FormRenderer } from './form-renderer';
 import { FormField } from '../../types/fields';
+import { screen, userEvent } from '@storybook/testing-library';
 
 const fields: FormField[] = [
   {
@@ -14,7 +15,6 @@ const fields: FormField[] = [
       {
         type: 'max_size',
         parameter: 100,
-        error_message: 'Max. 100 characters',
       },
       {
         type: 'function',
@@ -126,4 +126,41 @@ InitialValues.args = {
     'notifications-delay': 42,
     birthdate: new Date('1899-01-17'),
   },
+};
+
+export const CustomTexts = Template.bind({});
+CustomTexts.args = {
+  texts: {
+    submit: 'Send data',
+    errors: {
+      required: 'Custom required error',
+      max_size: {
+        string: (x) => `Custom max size error (${x} letters)`,
+      },
+    },
+  },
+  values: {
+    name: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    country: 'fr',
+  },
+};
+CustomTexts.play = async () => {
+  await userEvent.type(
+    screen.getByLabelText('Name *', {
+      selector: 'input',
+    }),
+    'x'
+  );
+  await userEvent.type(
+    screen.getByLabelText('E-mail *', {
+      selector: 'input',
+    }),
+    'foo'
+  );
+  await userEvent.selectOptions(
+    screen.getByLabelText('Country *', {
+      selector: 'select',
+    }),
+    ''
+  );
 };

@@ -9,6 +9,8 @@ import {
   FormFieldValidatorString,
   ValidationRules,
 } from './types/validators';
+import { DefaultTexts } from './types/forms';
+import { text } from 'stream/consumers';
 
 export const MOBILE_BREAKPOINT = 480;
 
@@ -26,7 +28,10 @@ export function isRequired(field: FormField): boolean {
   return field.validators?.some(({ type }) => type === 'required') || false;
 }
 
-export function buildValidationRules(field: FormField): ValidationRules {
+export function buildValidationRules(
+  field: FormField,
+  texts?: DefaultTexts
+): ValidationRules {
   const validators = field.validators || [];
   switch (field.type) {
     case 'boolean':
@@ -36,7 +41,8 @@ export function buildValidationRules(field: FormField): ValidationRules {
     case 'number':
       return buildValidationRulesNumber(
         validators as FormFieldValidatorNumber[],
-        field.format
+        field.format,
+        texts
       );
     case 'file':
       return buildValidationRulesFile(validators as FormFieldValidatorFile[]);
@@ -45,7 +51,8 @@ export function buildValidationRules(field: FormField): ValidationRules {
     case 'string':
       return buildValidationRulesString(
         validators as FormFieldValidatorString[],
-        field.format
+        field.format,
+        texts
       );
   }
 }
@@ -83,7 +90,8 @@ function buildValidationRulesBoolean(
 
 function buildValidationRulesNumber(
   validators: FormFieldValidatorNumber[],
-  format: FormFieldNumber['format']
+  format: FormFieldNumber['format'],
+  texts?: DefaultTexts
 ): ValidationRules {
   const { common, other } = extractCommonValidators<number>(validators);
 
@@ -93,7 +101,8 @@ function buildValidationRulesNumber(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        integer: (value: number) => Number.isInteger(value),
+        integer: (value: number) =>
+          Number.isInteger(value) || texts?.errors?.integer || false,
       },
     };
   } else {
@@ -101,7 +110,8 @@ function buildValidationRulesNumber(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        number: (value: number) => !isNaN(value),
+        number: (value: number) =>
+          !isNaN(value) || texts?.errors?.number || false,
       },
     };
   }
@@ -185,7 +195,8 @@ function buildValidationRulesDate(
 
 function buildValidationRulesString(
   validators: FormFieldValidatorString[],
-  format: FormFieldString['format']
+  format: FormFieldString['format'],
+  texts?: DefaultTexts
 ): ValidationRules {
   const { common, other } = extractCommonValidators<string>(validators);
 
@@ -195,7 +206,7 @@ function buildValidationRulesString(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        uuid: (value) => UUID_REGEX.test(value),
+        uuid: (value) => UUID_REGEX.test(value) || texts?.errors?.uuid || false,
       },
     };
   }
@@ -204,7 +215,10 @@ function buildValidationRulesString(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        email: (value) => EMAIL_REGEX.test(value),
+        email: (value) => {
+          console.log('texts?.errors?.email', texts?.errors?.email, texts);
+          return EMAIL_REGEX.test(value) || texts?.errors?.email || false;
+        },
       },
     };
   }
@@ -256,4 +270,80 @@ function extractCommonValidators<
   });
 
   return { common, other };
+}
+
+export const DEFAULT_TEXTS: DefaultTexts = {
+  submit: 'Submit',
+  errors: {
+    required: 'This field is mandatory',
+    regex: 'Bad format',
+    min: {
+      number: (min) => `Minimum: ${min}`,
+      date: (min) => `Minimum: ${min.toLocaleDateString('fr-FR')}`,
+    },
+    max: {
+      number: (max) => `Maximum: ${max}`,
+      date: (max) => `Maximum: ${max.toLocaleDateString('fr-FR')}`,
+    },
+    max_size: {
+      string: (size) => `Maximum: ${size} characters`,
+      file: (size) => `Maximum file size: ${size}MB`,
+    },
+    integer: 'Expected: integer',
+    number: 'Expected: number',
+    uuid: 'Expected: valid UUID',
+    email: 'Expected: valid e-mail',
+  },
+};
+
+export function injectDefaultTexts<T extends FormField>(
+  texts: DefaultTexts,
+  field: T
+): T {
+  const validators = field.validators?.map((validator) => {
+    let defaultText: string | undefined = undefined;
+
+    switch (validator.type) {
+      case 'required':
+        defaultText = texts?.errors?.required;
+        break;
+      case 'max_size':
+        if (field.type === 'string') {
+          defaultText = texts?.errors?.max_size?.string?.(validator.parameter);
+        }
+        if (field.type === 'file') {
+          defaultText = texts?.errors?.max_size?.file?.(validator.parameter);
+        }
+        break;
+      case 'regex':
+        defaultText = texts?.errors?.regex;
+        break;
+      case 'min':
+      case 'max':
+        if (field.type === 'number') {
+          defaultText = texts?.errors?.[validator.type]?.number?.(
+            validator.parameter as number
+          );
+        }
+        if (field.type === 'date') {
+          const d =
+            validator.parameter instanceof Date
+              ? validator.parameter
+              : new Date(validator.parameter);
+          defaultText = texts?.errors?.[validator.type]?.date?.(d);
+        }
+        break;
+      default:
+        break;
+    }
+
+    if (validator.error_message) return validator;
+
+    return { ...validator, error_message: defaultText };
+  });
+
+  return {
+    ...field,
+    validators,
+  };
 }
