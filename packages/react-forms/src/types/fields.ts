@@ -49,6 +49,7 @@ export type FormFieldNumber<K extends string = string> = FormField_<
 
 export type FormFieldFile<K extends string = string> = FormField_<'file', K> & {
   accepts: string;
+  multiple?: boolean;
   validators?: FormFieldValidatorFile[];
 };
 

@@ -97,12 +97,14 @@ describe('buildValidationRules', () => {
       accepts: 'image/*',
       validators: [
         { type: 'max_size', parameter: 50, error_message: 'Max. 50 MB' },
+        { type: 'max', parameter: 2 },
       ],
     };
     const rules = buildValidationRules(field);
     expect(rules).toMatchObject({
       validate: {
         file_max_size: expect.any(Function),
+        file_max: expect.any(Function),
       },
     });
   });

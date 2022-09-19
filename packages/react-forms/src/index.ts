@@ -1,5 +1,7 @@
 import './style.css';
 
+export * from './lib/form-field-file-renderer/form-field-file-renderer';
+
 export * from './lib/form-field-date-renderer/form-field-date-renderer';
 export * from './lib/form-field-string-renderer/form-field-string-renderer';
 export * from './lib/form-field-boolean-renderer/form-field-boolean-renderer';

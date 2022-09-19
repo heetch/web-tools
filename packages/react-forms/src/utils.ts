@@ -121,7 +121,7 @@ function buildValidationRulesNumber(
 function buildValidationRulesFile(
   validators: FormFieldValidatorFile[]
 ): ValidationRules {
-  const { common, other } = extractCommonValidators<File>(validators);
+  const { common, other } = extractCommonValidators<File[]>(validators);
   return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       case 'max_size':
@@ -129,8 +129,21 @@ function buildValidationRulesFile(
           ...acc,
           validate: {
             ...(acc?.validate || {}),
-            file_max_size: (file: File) => {
-              const valid = file.size * 1000 <= cur.parameter;
+            file_max_size: (files: File[]) => {
+              const valid = files.every(
+                (file) => file.size <= cur.parameter * 1000000
+              );
+              return valid || cur.error_message || false;
+            },
+          },
+        };
+      case 'max':
+        return {
+          ...acc,
+          validate: {
+            ...(acc?.validate || {}),
+            file_max: (files: File[]) => {
+              const valid = files.length <= cur.parameter;
               return valid || cur.error_message || false;
             },
           },
@@ -138,7 +151,7 @@ function buildValidationRulesFile(
       default:
         return acc;
     }
-  }, buildValidationRulesCommon<File>(common));
+  }, buildValidationRulesCommon<File[]>(common));
 }
 
 function buildValidationRulesDate(

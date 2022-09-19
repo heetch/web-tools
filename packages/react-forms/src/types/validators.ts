@@ -60,8 +60,9 @@ export type FormFieldValidatorDate =
   | FormFieldValidatorMax<Date | string>;
 
 export type FormFieldValidatorFile =
-  | FormFieldValidatorCommon<File>
-  | FormFieldValidatorMaxSize;
+  | FormFieldValidatorCommon<File[]>
+  | FormFieldValidatorMaxSize
+  | FormFieldValidatorMax<number>;
 
 type FormFieldValidator_<T extends FormFieldValidatorType> = {
   type: T;

@@ -1,0 +1,148 @@
+import styled from 'styled-components';
+import { FormFieldRendererProps } from '../../types/renderer';
+import { FormFieldFile } from '../../types/fields';
+import { buildValidationRules } from '../../utils';
+import { Controller } from 'react-hook-form';
+import {
+  Button,
+  Helper,
+  Icon,
+  IconButton,
+  Label,
+  theme as flamingo,
+  UiText,
+} from '@heetch/flamingo-react';
+import { ErrorHelper } from '../styled-components';
+import { useCallback, useRef } from 'react';
+
+const FileInputWrapper = styled.div`
+  > input {
+    visibility: hidden;
+    width: 0;
+  }
+
+  > button {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    color: ${flamingo.color_v3.type.light};
+    > span {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+`;
+
+const FileFieldWrapper = styled.div`
+  margin-top: 8px;
+  display: flex;
+  gap: 8px 16px;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const FileItem = styled(UiText).attrs({
+  variant: 'subContent',
+  textColor: flamingo.color_v3.type.default,
+})`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+
+  .f-Icon {
+    margin: 0;
+  }
+`;
+
+export function FormFieldFileRenderer({
+  field,
+  control,
+  options,
+}: FormFieldRendererProps<FormFieldFile>) {
+  const rules = buildValidationRules(field);
+
+  return (
+    <Controller
+      control={control}
+      name={field.id}
+      rules={rules}
+      render={({ field: fieldProps, fieldState }) => {
+        const fileInputRef = useRef<HTMLInputElement>(null);
+
+        const label = options?.showLabelsAsPlaceholders
+          ? undefined
+          : field.label;
+
+        const placeholder = options?.showLabelsAsPlaceholders
+          ? field.label
+          : field.placeholder;
+
+        const helper = fieldState?.error ? undefined : field.helper;
+
+        const errorHelper = fieldState?.error?.message;
+
+        const files = Array.isArray(fieldProps.value)
+          ? (fieldProps.value as File[])
+          : undefined;
+
+        const deleteFile = useCallback(
+          (file: File) => {
+            const remainingFiles = files?.filter((f) => f !== file) || [];
+            fieldProps.onChange(
+              remainingFiles.length > 0 ? remainingFiles : undefined
+            );
+          },
+          [fieldProps, files]
+        );
+
+        const addFiles = useCallback(
+          (filesList: FileList | null) => {
+            const newFiles = filesList ? Array.from(filesList) : [];
+            fieldProps.onChange(files ? [...files, ...newFiles] : newFiles);
+          },
+          [fieldProps, files]
+        );
+
+        return (
+          <>
+            {label && <Label htmlFor={fieldProps.name}>{label}</Label>}
+            <FileFieldWrapper>
+              {files?.map((file) => (
+                <FileItem key={file.name}>
+                  <IconButton
+                    icon="IconTrash"
+                    onClick={() => deleteFile(file)}
+                  />{' '}
+                  <span>{file.name}</span>
+                </FileItem>
+              ))}
+
+              <FileInputWrapper data-testid="file">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept={field.accepts}
+                  onChange={(e) => addFiles(e.target.files)}
+                />
+                <Button
+                  variant="text"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Icon icon="IconPlus" size="s" />
+                  {placeholder}
+                </Button>
+              </FileInputWrapper>
+            </FileFieldWrapper>
+            {helper && <Helper>{helper}</Helper>}
+            {errorHelper && <ErrorHelper>{errorHelper}</ErrorHelper>}
+          </>
+        );
+      }}
+    />
+  );
+}
+
+export default FormFieldFileRenderer;
