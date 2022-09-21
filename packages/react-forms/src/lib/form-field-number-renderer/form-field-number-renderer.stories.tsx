@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { expect } from '@storybook/jest';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 import { FormFieldNumberRenderer } from './form-field-number-renderer';
 import { FormFieldNumber } from '../../types/fields';
-import { sleep } from '../../utils';
 
 export default {
   component: FormFieldNumberRenderer,
-  title: 'Fields/Number',
+  title: 'Components/Fields/Number',
   argTypes: {
     control: { table: { disable: true } },
   },

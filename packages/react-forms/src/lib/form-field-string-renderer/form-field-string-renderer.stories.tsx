@@ -10,7 +10,7 @@ import { sleep } from '../../utils';
 
 export default {
   component: FormFieldStringRenderer,
-  title: 'Fields/String',
+  title: 'Components/Fields/String',
   argTypes: {
     control: { table: { disable: true } },
   },

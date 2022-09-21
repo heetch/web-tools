@@ -10,7 +10,7 @@ import { sleep } from '../../utils';
 
 export default {
   component: FormFieldBooleanRenderer,
-  title: 'Fields/Boolean',
+  title: 'Components/Fields/Boolean',
   argTypes: {
     control: { table: { disable: true } },
   },

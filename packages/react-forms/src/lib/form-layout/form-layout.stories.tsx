@@ -11,7 +11,7 @@ const CellContent = styled.div`
 `;
 
 export default {
-  title: 'Layout',
+  title: 'Components/Layout',
 } as Meta<LayoutStoryProps>;
 
 const Template: Story<LayoutStoryProps> = (args) => (

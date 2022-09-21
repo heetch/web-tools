@@ -7,7 +7,7 @@ import { FormFieldFile } from '../../types/fields';
 
 export default {
   component: FormFieldFileRenderer,
-  title: 'Fields/File',
+  title: 'Components/Fields/File',
   argTypes: {
     control: { table: { disable: true } },
   },

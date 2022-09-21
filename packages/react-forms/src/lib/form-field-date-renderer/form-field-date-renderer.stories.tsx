@@ -11,7 +11,7 @@ import { sleep } from '../../utils';
 
 export default {
   component: FormFieldDateRenderer,
-  title: 'Fields/Date',
+  title: 'Components/Fields/Date',
   argTypes: {
     control: { table: { disable: true } },
   },

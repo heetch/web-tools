@@ -215,10 +215,8 @@ function buildValidationRulesString(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        email: (value) => {
-          console.log('texts?.errors?.email', texts?.errors?.email, texts);
-          return EMAIL_REGEX.test(value) || texts?.errors?.email || false;
-        },
+        email: (value) =>
+          EMAIL_REGEX.test(value) || texts?.errors?.email || false,
       },
     };
   }

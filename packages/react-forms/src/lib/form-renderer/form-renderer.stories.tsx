@@ -70,7 +70,7 @@ const fields: FormField[] = [
 
 export default {
   component: FormRenderer,
-  title: 'Form',
+  title: 'Components/Form',
   args: {
     fields,
     values: {},
@@ -85,8 +85,8 @@ const Template: ComponentStory<typeof FormRenderer> = (args) => (
   <FormRenderer {...args} />
 );
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Basic = Template.bind({});
+Basic.args = {};
 
 export const LabelAsPlaceholder = Template.bind({});
 LabelAsPlaceholder.storyName = 'Label as placeholder';
