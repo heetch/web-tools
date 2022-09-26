@@ -2,7 +2,7 @@ import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldString } from '../../types/fields';
 import { Controller } from 'react-hook-form';
 import { InputField, SelectField, TextareaField } from '@heetch/flamingo-react';
-import { buildValidationRules, isRequired } from '../../utils';
+import { buildValidationRules, classNames, isRequired } from '../../utils';
 
 export function FormFieldStringRenderer({
   field,
@@ -41,11 +41,36 @@ export function FormFieldStringRenderer({
 
         switch (field.format) {
           case 'text':
-            return <TextareaField {...props} />;
+            return (
+              <TextareaField
+                {...props}
+                className={[
+                  classNames.field.string.common,
+                  classNames.field.string.text,
+                ].join(' ')}
+              />
+            );
           case 'select':
-            return <SelectField {...props} options={field.options} />;
+            return (
+              <SelectField
+                {...props}
+                options={field.options}
+                className={[
+                  classNames.field.string.common,
+                  classNames.field.string.select,
+                ].join(' ')}
+              />
+            );
           default:
-            return <InputField {...props} />;
+            return (
+              <InputField
+                {...props}
+                className={[
+                  classNames.field.string.common,
+                  classNames.field.string.line,
+                ].join(' ')}
+              />
+            );
         }
       }}
     />

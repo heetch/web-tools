@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import { InputField } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldNumber } from '../../types/fields';
-import { buildValidationRules, isRequired } from '../../utils';
+import { buildValidationRules, classNames, isRequired } from '../../utils';
 import {
   FormFieldValidatorCommon,
   FormFieldValidatorDate,
@@ -72,6 +72,7 @@ export function FormFieldNumberRenderer({
           type: 'number',
           min,
           max,
+          className: classNames.field.number,
         };
 
         return <InputField {...props} />;

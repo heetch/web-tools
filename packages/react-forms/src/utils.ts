@@ -364,3 +364,38 @@ export function injectDefaultTexts<T extends FormField>(
     validators,
   };
 }
+
+export const classNames = {
+  form: 'rf-form',
+  submit: 'rf-submit',
+  layout: {
+    row: 'rf-layout-row',
+    cell: 'rf-layout-cell',
+  },
+  field: {
+    boolean: {
+      common: 'rf-field-boolean',
+      checkbox: 'rf-field-boolean-checkbox',
+      toggle: 'rf-field-boolean-toggle',
+    },
+    date: {
+      common: 'rf-field-date',
+      datetime: 'rf-field-date-datetime',
+    },
+    file: {
+      base: 'rf-field-file',
+      list: 'rf-field-file-list',
+      item: 'rf-field-file-item',
+      input_wrapper: 'rf-field-file-input-wrapper',
+      input: 'rf-field-file-input',
+      add_button: 'rf-field-file-add-btn',
+    },
+    number: 'rf-field-number',
+    string: {
+      common: 'rf-field-string',
+      line: 'rf-field-string-line',
+      text: 'rf-field-string-text',
+      select: 'rf-field-string-select',
+    },
+  },
+};

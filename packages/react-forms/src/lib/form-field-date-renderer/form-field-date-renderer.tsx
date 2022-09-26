@@ -10,6 +10,7 @@ import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldDate } from '../../types/fields';
 import {
   buildValidationRules,
+  classNames,
   isRequired,
   MOBILE_BREAKPOINT,
 } from '../../utils';
@@ -77,7 +78,14 @@ export function FormFieldDateRenderer({
         )?.parameter;
 
         return (
-          <>
+          <div
+            className={[
+              classNames.field.date.common,
+              ...(field.format === 'date-time'
+                ? [classNames.field.date.datetime]
+                : []),
+            ].join(' ')}
+          >
             {label && <Label htmlFor={fieldProps.name}>{label}</Label>}
             <DatepickerDay
               {...props}
@@ -95,7 +103,7 @@ export function FormFieldDateRenderer({
             />
             {helper && <Helper>{helper}</Helper>}
             {errorHelper && <ErrorHelper>{errorHelper}</ErrorHelper>}
-          </>
+          </div>
         );
       }}
     />

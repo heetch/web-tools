@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldFile } from '../../types/fields';
-import { buildValidationRules, isRequired } from '../../utils';
+import { buildValidationRules, classNames, isRequired } from '../../utils';
 import { Controller } from 'react-hook-form';
 import {
   Button,
@@ -110,11 +110,14 @@ export function FormFieldFileRenderer({
         );
 
         return (
-          <>
+          <div className={classNames.field.file.base}>
             {label && <Label htmlFor={fieldProps.name}>{label}</Label>}
-            <FileFieldWrapper>
+            <FileFieldWrapper className={classNames.field.file.list}>
               {files?.map((file) => (
-                <FileItem key={file.name}>
+                <FileItem
+                  key={file.name}
+                  className={classNames.field.file.item}
+                >
                   <IconButton
                     icon="IconTrash"
                     onClick={() => deleteFile(file)}
@@ -123,16 +126,21 @@ export function FormFieldFileRenderer({
                 </FileItem>
               ))}
 
-              <FileInputWrapper data-testid="file">
+              <FileInputWrapper
+                data-testid="file"
+                className={classNames.field.file.input_wrapper}
+              >
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept={field.accepts}
                   onChange={(e) => addFiles(e.target.files)}
+                  className={classNames.field.file.input}
                 />
                 <Button
                   variant="text"
                   onClick={() => fileInputRef.current?.click()}
+                  className={classNames.field.file.add_button}
                 >
                   <Icon icon="IconPlus" size="s" />
                   {placeholder}
@@ -141,7 +149,7 @@ export function FormFieldFileRenderer({
             </FileFieldWrapper>
             {helper && <Helper>{helper}</Helper>}
             {errorHelper && <ErrorHelper>{errorHelper}</ErrorHelper>}
-          </>
+          </div>
         );
       }}
     />

@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button } from '@heetch/flamingo-react';
-import { DefaultTexts, Form, FormOptions } from '../../types/forms';
+import { DefaultTexts, Form } from '../../types/forms';
 import { FormFieldBooleanRenderer } from '../form-field-boolean-renderer/form-field-boolean-renderer';
 import { FormFieldNumberRenderer } from '../form-field-number-renderer/form-field-number-renderer';
 import { FormFieldFileRenderer } from '../form-field-file-renderer/form-field-file-renderer';
@@ -12,8 +12,8 @@ import {
   FormLayoutCell,
   FormLayoutRow,
 } from '../form-layout/form-layout';
-import { DEFAULT_TEXTS, injectDefaultTexts } from '../../utils';
-import { useCallback, useEffect, useMemo } from 'react';
+import { classNames, DEFAULT_TEXTS, injectDefaultTexts } from '../../utils';
+import { useCallback } from 'react';
 
 export function FormRenderer({
   fields,
@@ -173,6 +173,7 @@ export function FormRenderer({
             type="submit"
             disabled={!formState.isValid}
             isLoading={formState.isSubmitting}
+            className={classNames.submit}
           >
             {texts?.submit}
           </Button>

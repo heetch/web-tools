@@ -2,7 +2,7 @@ import { Checkbox, Toggle } from '@heetch/flamingo-react';
 import { Controller, UseControllerProps } from 'react-hook-form';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldBoolean } from '../../types/fields';
-import { buildValidationRules, isRequired } from '../../utils';
+import { buildValidationRules, classNames, isRequired } from '../../utils';
 
 export function FormFieldBooleanRenderer({
   field,
@@ -32,9 +32,25 @@ export function FormFieldBooleanRenderer({
         };
 
         return field.format === 'toggle' ? (
-          <Toggle {...props}>{label}</Toggle>
+          <Toggle
+            {...props}
+            className={[
+              classNames.field.boolean.common,
+              classNames.field.boolean.toggle,
+            ].join(' ')}
+          >
+            {label}
+          </Toggle>
         ) : (
-          <Checkbox {...props}>{label}</Checkbox>
+          <Checkbox
+            {...props}
+            className={[
+              classNames.field.boolean.common,
+              classNames.field.boolean.checkbox,
+            ].join(' ')}
+          >
+            {label}
+          </Checkbox>
         );
       }}
     />

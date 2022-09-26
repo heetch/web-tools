@@ -1,14 +1,17 @@
 import styled, { css } from 'styled-components';
 import { FormCell } from '@heetch/react-forms';
 import { PropsWithChildren } from 'react';
+import { classNames } from '../../utils';
 
-export const FormLayout = styled.form`
+export const FormLayout = styled.form.attrs({ className: classNames.form })`
   display: flex;
   gap: 8px;
   flex-direction: column;
 `;
 
-export const FormLayoutRow = styled.div`
+export const FormLayoutRow = styled.div.attrs({
+  className: classNames.layout.row,
+})`
   display: flex;
   gap: 8px;
   justify-content: baseline;
@@ -22,7 +25,9 @@ export const FormLayoutCell = ({
   return <StyledCell widthConstraint={widthConstraint}>{children}</StyledCell>;
 };
 
-const StyledCell = styled.div<Pick<FormCell, 'widthConstraint'>>`
+const StyledCell = styled.div.attrs({ className: classNames.layout.cell })<
+  Pick<FormCell, 'widthConstraint'>
+>`
   ${({ widthConstraint }) =>
     typeof widthConstraint === 'string'
       ? css`
