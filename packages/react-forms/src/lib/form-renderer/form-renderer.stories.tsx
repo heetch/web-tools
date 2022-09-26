@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { FormRenderer } from './form-renderer';
 import { FormField } from '../../types/fields';
 import { screen, userEvent } from '@storybook/testing-library';
+import { sleep } from '../../utils';
 
 const fields: FormField[] = [
   {
@@ -18,6 +19,7 @@ const fields: FormField[] = [
       },
       {
         type: 'function',
+        name: 'no-unknown',
         parameter: (value) => {
           if (value === 'John Doe') return 'No unknown people';
           return true;
@@ -162,5 +164,161 @@ CustomTexts.play = async () => {
       selector: 'select',
     }),
     ''
+  );
+};
+
+export const Validation = Template.bind({});
+Validation.args = {
+  fields: fields.filter((f) =>
+    ['name', 'email', 'notifications', 'notifications-delay'].includes(f.id)
+  ),
+  layout: [
+    { cells: [{ field: 'name' }] },
+    { cells: [{ field: 'email' }] },
+    {
+      cells: [
+        { field: 'notifications', widthConstraint: '200px' },
+        { field: 'notifications-delay' },
+      ],
+    },
+  ],
+  values: { 'notifications-delay': 0 },
+  validators: [
+    {
+      validator: (values) => {
+        if (
+          typeof values['name'] === 'string' &&
+          values['name'].includes('X')
+        ) {
+          return {
+            errors: [
+              {
+                field: 'name',
+                error: 'Unknowns are forbidden',
+              },
+            ],
+          };
+        }
+
+        return { errors: [] };
+      },
+    },
+    {
+      validator: (values) => {
+        if (
+          typeof values['email'] === 'string' &&
+          values['email'].includes('x')
+        ) {
+          return {
+            errors: [
+              {
+                field: 'email',
+                error: 'No "x" in emails',
+              },
+            ],
+          };
+        }
+
+        return { errors: [] };
+      },
+    },
+    {
+      async: true,
+      validator: (values) =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            if (
+              values['notifications'] === true &&
+              (values['notifications-delay'] as number) < 1
+            ) {
+              resolve({
+                errors: [
+                  {
+                    field: 'notifications-delay',
+                    error: 'Must be > 1 if notifications are enabled',
+                  },
+                ],
+              });
+            }
+            resolve({
+              errors: [],
+            });
+          }, 1000);
+        }),
+    },
+  ],
+};
+Validation.play = async () => {
+  await sleep(100);
+  await userEvent.type(
+    screen.getByLabelText('Name *', {
+      selector: 'input',
+    }),
+    'John X'
+  );
+  await userEvent.type(
+    screen.getByLabelText('E-mail *', {
+      selector: 'input',
+    }),
+    'john.x@mail.com'
+  );
+  await userEvent.click(
+    screen.getByLabelText('Enable notifications', { selector: 'input' })
+  );
+  await sleep(100);
+  await userEvent.click(screen.getByText('Submit'));
+};
+
+export const Autofill = Template.bind({});
+Autofill.args = {
+  fields: [
+    {
+      id: 'name',
+      type: 'string',
+      label: 'Name',
+      format: 'line',
+      validators: [
+        { type: 'required' },
+        {
+          type: 'max_size',
+          parameter: 100,
+        },
+        {
+          type: 'function',
+          async: true,
+          parameter: (value, setValue) => {
+            if (!value) return true;
+
+            const words = value.split(/\s/).filter((w) => !!w);
+            if (words.length > 1) {
+              const email = words.join('.') + '@mail.com';
+              setValue('email', email);
+            }
+
+            return true;
+          },
+        },
+      ],
+    },
+    {
+      id: 'email',
+      type: 'string',
+      label: 'E-mail',
+      placeholder: 'Please enter a valid e-mail',
+      format: 'email',
+      validators: [{ type: 'required' }],
+    },
+  ] as FormField[],
+};
+Autofill.play = async () => {
+  await sleep(100);
+  await userEvent.type(
+    screen.getByLabelText('Name *', {
+      selector: 'input',
+    }),
+    'John Doe',
+    {
+      delay: 100,
+    }
   );
 };

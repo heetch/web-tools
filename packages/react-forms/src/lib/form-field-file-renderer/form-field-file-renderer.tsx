@@ -60,10 +60,11 @@ const FileItem = styled(UiText).attrs({
 export function FormFieldFileRenderer({
   field,
   control,
+  setValue,
   options,
   texts,
 }: FormFieldRendererProps<FormFieldFile>) {
-  const rules = buildValidationRules(field, texts);
+  const rules = buildValidationRules(field, texts, setValue);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (

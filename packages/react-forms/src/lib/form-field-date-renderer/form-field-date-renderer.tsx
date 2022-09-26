@@ -22,10 +22,11 @@ import {
 export function FormFieldDateRenderer({
   field,
   control,
+  setValue,
   options,
   texts,
 }: FormFieldRendererProps<FormFieldDate>) {
-  const rules = buildValidationRules(field, texts);
+  const rules = buildValidationRules(field, texts, setValue);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (

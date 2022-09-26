@@ -1,7 +1,11 @@
 // Forms validators
-import { UseControllerProps } from 'react-hook-form';
+import {
+  FieldValues,
+  UseControllerProps,
+  UseFormSetValue,
+} from 'react-hook-form';
 
-export type FormValidatorError<K extends string> = {
+export type FormValidatorError<K extends string = string> = {
   field: K;
   error: string;
 };
@@ -9,9 +13,7 @@ export type FormValidatorError<K extends string> = {
 export type FormValidator<
   V extends Record<K, unknown>,
   K extends string = keyof V & string
-> = {
-  trigger?: 'submit' | 'change'; // Default: submit
-} & (
+> =
   | {
       async: true;
       validator: (values: V) => Promise<{ errors: FormValidatorError<K>[] }>;
@@ -19,8 +21,7 @@ export type FormValidator<
   | {
       async?: false;
       validator: (values: V) => { errors: FormValidatorError<K>[] };
-    }
-);
+    };
 
 // Fields validators
 export type FormFieldValidatorType =
@@ -66,8 +67,7 @@ export type FormFieldValidatorFile =
 
 type FormFieldValidator_<T extends FormFieldValidatorType> = {
   type: T;
-  error_message?: string;
-};
+} & (T extends 'function' ? {} : { error_message?: string });
 
 type FormFieldValidatorRequired = FormFieldValidator_<'required'>;
 
@@ -83,17 +83,22 @@ type FormFieldValidatorMin<T> = FormFieldValidator_<'min'> & { parameter: T };
 
 type FormFieldValidatorMax<T> = FormFieldValidator_<'max'> & { parameter: T };
 
-type FormFieldValidatorFunction<T> = FormFieldValidator_<'function'> &
-  (
+type FormFieldValidatorFunction<T> = FormFieldValidator_<'function'> & {
+  name?: string;
+} & (
     | {
-        name?: string;
         async: true;
-        parameter: (value: T) => Promise<boolean | string>;
+        parameter: (
+          value: T,
+          setValue: UseFormSetValue<FieldValues>
+        ) => Promise<boolean | string>;
       }
     | {
-        name?: string;
         async?: false;
-        parameter: (value: T) => boolean | string;
+        parameter: (
+          value: T,
+          setValue: UseFormSetValue<FieldValues>
+        ) => boolean | string;
       }
   );
 

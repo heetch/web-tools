@@ -11,6 +11,7 @@ import {
 } from './types/validators';
 import { DefaultTexts } from './types/forms';
 import { text } from 'stream/consumers';
+import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 export const MOBILE_BREAKPOINT = 480;
 
@@ -30,27 +31,37 @@ export function isRequired(field: FormField): boolean {
 
 export function buildValidationRules(
   field: FormField,
-  texts?: DefaultTexts
+  texts?: DefaultTexts,
+  setValue: UseFormSetValue<FieldValues> = () => {}
 ): ValidationRules {
   const validators = field.validators || [];
   switch (field.type) {
     case 'boolean':
       return buildValidationRulesBoolean(
-        validators as FormFieldValidatorBoolean[]
+        validators as FormFieldValidatorBoolean[],
+        setValue
       );
     case 'number':
       return buildValidationRulesNumber(
         validators as FormFieldValidatorNumber[],
+        setValue,
         field.format,
         texts
       );
     case 'file':
-      return buildValidationRulesFile(validators as FormFieldValidatorFile[]);
+      return buildValidationRulesFile(
+        validators as FormFieldValidatorFile[],
+        setValue
+      );
     case 'date':
-      return buildValidationRulesDate(validators as FormFieldValidatorDate[]);
+      return buildValidationRulesDate(
+        validators as FormFieldValidatorDate[],
+        setValue
+      );
     case 'string':
       return buildValidationRulesString(
         validators as FormFieldValidatorString[],
+        setValue,
         field.format,
         texts
       );
@@ -58,7 +69,8 @@ export function buildValidationRules(
 }
 
 function buildValidationRulesCommon<T>(
-  validators: FormFieldValidatorCommon<T>[]
+  validators: FormFieldValidatorCommon<T>[],
+  setValue: UseFormSetValue<FieldValues>
 ): ValidationRules {
   return validators.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
@@ -74,7 +86,7 @@ function buildValidationRulesCommon<T>(
           ...acc,
           validate: {
             ...(acc?.validate || {}),
-            [cur.name || 'custom']: cur.parameter,
+            [cur.name || 'custom']: (value) => cur.parameter(value, setValue),
           },
         };
     }
@@ -83,19 +95,21 @@ function buildValidationRulesCommon<T>(
 }
 
 function buildValidationRulesBoolean(
-  validators: FormFieldValidatorBoolean[]
+  validators: FormFieldValidatorBoolean[],
+  setValue: UseFormSetValue<FieldValues>
 ): ValidationRules {
-  return buildValidationRulesCommon<boolean>(validators);
+  return buildValidationRulesCommon<boolean>(validators, setValue);
 }
 
 function buildValidationRulesNumber(
   validators: FormFieldValidatorNumber[],
+  setValue: UseFormSetValue<FieldValues>,
   format: FormFieldNumber['format'],
   texts?: DefaultTexts
 ): ValidationRules {
   const { common, other } = extractCommonValidators<number>(validators);
 
-  let baseRules = buildValidationRulesCommon<number>(common);
+  let baseRules = buildValidationRulesCommon<number>(common, setValue);
   if (format === 'integer') {
     baseRules = {
       ...(baseRules || {}),
@@ -133,7 +147,8 @@ function buildValidationRulesNumber(
 }
 
 function buildValidationRulesFile(
-  validators: FormFieldValidatorFile[]
+  validators: FormFieldValidatorFile[],
+  setValue: UseFormSetValue<FieldValues>
 ): ValidationRules {
   const { common, other } = extractCommonValidators<File[]>(validators);
   return other.reduce<ValidationRules>((acc, cur) => {
@@ -165,11 +180,12 @@ function buildValidationRulesFile(
       default:
         return acc;
     }
-  }, buildValidationRulesCommon<File[]>(common));
+  }, buildValidationRulesCommon<File[]>(common, setValue));
 }
 
 function buildValidationRulesDate(
-  validators: FormFieldValidatorDate[]
+  validators: FormFieldValidatorDate[],
+  setValue: UseFormSetValue<FieldValues>
 ): ValidationRules {
   const { common, other } = extractCommonValidators<Date>(validators);
   return other.reduce<ValidationRules>((acc, cur) => {
@@ -190,17 +206,18 @@ function buildValidationRulesDate(
       default:
         return acc;
     }
-  }, buildValidationRulesCommon<Date>(common));
+  }, buildValidationRulesCommon<Date>(common, setValue));
 }
 
 function buildValidationRulesString(
   validators: FormFieldValidatorString[],
+  setValue: UseFormSetValue<FieldValues>,
   format: FormFieldString['format'],
   texts?: DefaultTexts
 ): ValidationRules {
   const { common, other } = extractCommonValidators<string>(validators);
 
-  let baseRules = buildValidationRulesCommon<string>(common);
+  let baseRules = buildValidationRulesCommon<string>(common, setValue);
   if (format === 'uuid') {
     baseRules = {
       ...(baseRules || {}),
@@ -331,6 +348,8 @@ export function injectDefaultTexts<T extends FormField>(
           defaultText = texts?.errors?.[validator.type]?.date?.(d);
         }
         break;
+      case 'function':
+        return validator; // The custom validation function provides its own error message
       default:
         break;
     }

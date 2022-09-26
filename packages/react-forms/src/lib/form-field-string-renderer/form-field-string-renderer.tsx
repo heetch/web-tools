@@ -7,10 +7,11 @@ import { buildValidationRules, isRequired } from '../../utils';
 export function FormFieldStringRenderer({
   field,
   control,
+  setValue,
   options,
   texts,
 }: FormFieldRendererProps<FormFieldString>) {
-  const rules = buildValidationRules(field, texts);
+  const rules = buildValidationRules(field, texts, setValue);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
 
   return (

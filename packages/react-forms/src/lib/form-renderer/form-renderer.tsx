@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { Button } from '@heetch/flamingo-react';
 import { DefaultTexts, Form, FormOptions } from '../../types/forms';
 import { FormFieldBooleanRenderer } from '../form-field-boolean-renderer/form-field-boolean-renderer';
@@ -13,6 +13,7 @@ import {
   FormLayoutRow,
 } from '../form-layout/form-layout';
 import { DEFAULT_TEXTS, injectDefaultTexts } from '../../utils';
+import { useCallback, useEffect, useMemo } from 'react';
 
 export function FormRenderer({
   fields,
@@ -21,11 +22,35 @@ export function FormRenderer({
   options,
   texts: textsOverrides,
   layout,
+  validators,
 }: Form) {
-  const { control, handleSubmit, formState } = useForm({
+  const { control, handleSubmit, formState, setError, setValue } = useForm({
     defaultValues: values,
     mode: 'onChange',
   });
+
+  const validateAndSubmit = useCallback(
+    async (values: FieldValues) => {
+      // Execute each validator first
+      let isValid = true;
+
+      for (const { validator, async } of validators || []) {
+        const result = async ? await validator(values) : validator(values);
+
+        if (result.errors.length > 0) {
+          isValid = false;
+          result.errors.forEach(({ error, field }) => {
+            setError(field, { type: 'onSubmit', message: error });
+          });
+        }
+      }
+
+      if (!isValid) return;
+
+      return onSubmit(values);
+    },
+    [validators, setError, setValue, onSubmit]
+  );
 
   const formLayout: FormRow[] =
     layout || fields.map((field) => ({ cells: [{ field: field.id }] }));
@@ -66,7 +91,7 @@ export function FormRenderer({
   };
 
   return (
-    <FormLayout onSubmit={handleSubmit(onSubmit)}>
+    <FormLayout onSubmit={handleSubmit(validateAndSubmit)}>
       {formLayout.map((row, rowIndex) => (
         <FormLayoutRow key={'row-' + rowIndex}>
           {row.cells.map((cell) => {
@@ -84,6 +109,7 @@ export function FormRenderer({
                     options={options}
                     texts={texts}
                     control={control}
+                    setValue={setValue}
                   />
                 );
                 break;
@@ -94,6 +120,7 @@ export function FormRenderer({
                     options={options}
                     texts={texts}
                     control={control}
+                    setValue={setValue}
                   />
                 );
                 break;
@@ -104,6 +131,7 @@ export function FormRenderer({
                     options={options}
                     texts={texts}
                     control={control}
+                    setValue={setValue}
                   />
                 );
                 break;
@@ -114,6 +142,7 @@ export function FormRenderer({
                     options={options}
                     texts={texts}
                     control={control}
+                    setValue={setValue}
                   />
                 );
                 break;
@@ -124,6 +153,7 @@ export function FormRenderer({
                     options={options}
                     texts={texts}
                     control={control}
+                    setValue={setValue}
                   />
                 );
                 break;
