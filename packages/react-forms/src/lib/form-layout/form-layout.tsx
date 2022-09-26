@@ -11,6 +11,8 @@ export const FormLayout = styled.form`
 export const FormLayoutRow = styled.div`
   display: flex;
   gap: 8px;
+  justify-content: baseline;
+  align-items: center;
 `;
 
 export const FormLayoutCell = ({
