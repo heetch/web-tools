@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "react-forms:build": "nx build react-forms",
     "react-forms:storybook": "nx storybook react-forms",
     "react-forms:gen:stories": "nx g @nrwl/react:stories --project react-forms --generateCypressSpecs false",
     "react-forms:gen:component": "nx g c --project react-forms --skipTests true --style styled-components --export true"
