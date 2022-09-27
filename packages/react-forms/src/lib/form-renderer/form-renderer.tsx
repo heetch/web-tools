@@ -49,7 +49,7 @@ export function FormRenderer({
 
       return onSubmit(values);
     },
-    [validators, setError, setValue, onSubmit]
+    [validators, setError, onSubmit]
   );
 
   const formLayout: FormRow[] =

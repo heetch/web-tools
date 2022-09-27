@@ -1,5 +1,5 @@
 import { Checkbox, Toggle } from '@heetch/flamingo-react';
-import { Controller, UseControllerProps } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldBoolean } from '../../types/fields';
 import { buildValidationRules, classNames, isRequired } from '../../utils';

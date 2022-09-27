@@ -67,7 +67,7 @@ export type FormFieldValidatorFile =
 
 type FormFieldValidator_<T extends FormFieldValidatorType> = {
   type: T;
-} & (T extends 'function' ? {} : { error_message?: string });
+} & (T extends 'function' ? Record<string, never> : { error_message?: string });
 
 type FormFieldValidatorRequired = FormFieldValidator_<'required'>;
 

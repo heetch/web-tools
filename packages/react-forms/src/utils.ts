@@ -10,16 +10,16 @@ import {
   ValidationRules,
 } from './types/validators';
 import { DefaultTexts } from './types/forms';
-import { text } from 'stream/consumers';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 
 export const MOBILE_BREAKPOINT = 480;
 
+// eslint-disable-line no-control-regex
 export const EMAIL_REGEX =
-  /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+  /(?:[a-z\d!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z\d!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z\d](?:[a-z\d-]*[a-z\d])?\.)+[a-z\d](?:[a-z\d-]*[a-z\d])?|\[(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?|[a-z\d-]*[a-z\d]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/; // eslint-disable-line no-control-regex
 
 export const UUID_REGEX =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+  /^[\da-fA-F]{8}\b-[\da-fA-F]{4}\b-[\da-fA-F]{4}\b-[\da-fA-F]{4}\b-[\da-fA-F]{12}$/; // eslint-disable-line no-control-regex
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,7 +32,7 @@ export function isRequired(field: FormField): boolean {
 export function buildValidationRules(
   field: FormField,
   texts?: DefaultTexts,
-  setValue: UseFormSetValue<FieldValues> = () => {}
+  setValue: UseFormSetValue<FieldValues> = () => {} // eslint-disable-line @typescript-eslint/no-empty-function
 ): ValidationRules {
   const validators = field.validators || [];
   switch (field.type) {
@@ -191,7 +191,7 @@ function buildValidationRulesDate(
   return other.reduce<ValidationRules>((acc, cur) => {
     switch (cur.type) {
       case 'min':
-      case 'max':
+      case 'max': {
         const parameter =
           cur.parameter instanceof Date
             ? cur.parameter
@@ -203,6 +203,7 @@ function buildValidationRulesDate(
             ? { value: parameter, message: cur.error_message }
             : parameter,
         };
+      }
       default:
         return acc;
     }
@@ -247,7 +248,7 @@ function buildValidationRulesString(
             ? { value: cur.parameter, message: cur.error_message }
             : cur.parameter,
         };
-      case 'regex':
+      case 'regex': {
         const re =
           cur.parameter instanceof RegExp
             ? cur.parameter
@@ -258,6 +259,7 @@ function buildValidationRulesString(
             ? { value: re, message: cur.error_message }
             : re,
         };
+      }
       default:
         return acc;
     }

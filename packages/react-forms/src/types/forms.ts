@@ -9,7 +9,7 @@ export type Form<
 > = {
   fields: FormField<K>[];
   values: DeepPartial<V>;
-  onSubmit: (values: V) => Promise<any>;
+  onSubmit: (values: V) => Promise<unknown>;
   validators?: FormValidator<V>[];
   layout?: FormRow<K>[];
   options?: FormOptions;

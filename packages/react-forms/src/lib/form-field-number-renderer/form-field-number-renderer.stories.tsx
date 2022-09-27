@@ -87,7 +87,7 @@ Validation.args = {
       {
         type: 'function',
         name: 'the_answer',
-        parameter: (value) => value == 42 || 'This is not the correct answer',
+        parameter: (value) => value === 42 || 'This is not the correct answer',
       },
     ],
   } as FormFieldNumber,

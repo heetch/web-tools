@@ -29,6 +29,7 @@ export function FormFieldDateRenderer({
 }: FormFieldRendererProps<FormFieldDate>) {
   const rules = buildValidationRules(field, texts, setValue);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
+  const vpWidth = useWindowWidth();
 
   return (
     <Controller
@@ -36,8 +37,6 @@ export function FormFieldDateRenderer({
       name={field.id}
       rules={rules}
       render={({ field: fieldProps, fieldState }) => {
-        const vpWidth = useWindowWidth();
-
         let label: string | undefined =
           field.label + (showAsterisk ? ' *' : '');
         let placeholder: string | undefined = field.placeholder;

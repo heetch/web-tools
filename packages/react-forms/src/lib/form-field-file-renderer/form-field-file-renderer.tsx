@@ -13,7 +13,7 @@ import {
   UiText,
 } from '@heetch/flamingo-react';
 import { ErrorHelper } from '../styled-components';
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 
 const FileInputWrapper = styled.div`
   > input {
@@ -66,6 +66,7 @@ export function FormFieldFileRenderer({
 }: FormFieldRendererProps<FormFieldFile>) {
   const rules = buildValidationRules(field, texts, setValue);
   const showAsterisk = options?.showRequiredAsterisk && isRequired(field);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <Controller
@@ -73,8 +74,6 @@ export function FormFieldFileRenderer({
       name={field.id}
       rules={rules}
       render={({ field: fieldProps, fieldState }) => {
-        const fileInputRef = useRef<HTMLInputElement>(null);
-
         let label: string | undefined =
           field.label + (showAsterisk ? ' *' : '');
         let placeholder: string | undefined = field.placeholder;
@@ -91,23 +90,17 @@ export function FormFieldFileRenderer({
           ? (fieldProps.value as File[])
           : undefined;
 
-        const deleteFile = useCallback(
-          (file: File) => {
-            const remainingFiles = files?.filter((f) => f !== file) || [];
-            fieldProps.onChange(
-              remainingFiles.length > 0 ? remainingFiles : undefined
-            );
-          },
-          [fieldProps, files]
-        );
+        const deleteFile = (file: File) => {
+          const remainingFiles = files?.filter((f) => f !== file) || [];
+          fieldProps.onChange(
+            remainingFiles.length > 0 ? remainingFiles : undefined
+          );
+        };
 
-        const addFiles = useCallback(
-          (filesList: FileList | null) => {
-            const newFiles = filesList ? Array.from(filesList) : [];
-            fieldProps.onChange(files ? [...files, ...newFiles] : newFiles);
-          },
-          [fieldProps, files]
-        );
+        const addFiles = (filesList: FileList | null) => {
+          const newFiles = filesList ? Array.from(filesList) : [];
+          fieldProps.onChange(files ? [...files, ...newFiles] : newFiles);
+        };
 
         return (
           <div className={classNames.field.file.base}>
