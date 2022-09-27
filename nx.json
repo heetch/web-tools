@@ -3,7 +3,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "heetch",
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "master"
   },
   "tasksRunnerOptions": {
     "default": {
