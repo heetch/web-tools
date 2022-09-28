@@ -13,6 +13,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: master
       - run: yarn install
       - run: yarn nx workspace-lint
       - run: yarn nx format:check
@@ -28,6 +30,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: master
       - run: yarn install
       - run: yarn nx affected --target=build-storybook --parallel=3
       - name: Deploy 🚀
