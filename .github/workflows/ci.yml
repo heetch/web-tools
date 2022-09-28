@@ -19,7 +19,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: master
-      - run: yarn --prefer-offline
+      - run: yarn install
       - run: yarn nx workspace-lint
       - run: yarn nx affected --target=lint --parallel=3
       - run: yarn nx affected --target=build-storybook --parallel=3
@@ -39,7 +39,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: master
-      - run: yarn --prefer-offline
+      - run: yarn install
       - run: yarn nx affected --target=build-storybook --parallel=3
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.6.2
