@@ -41,7 +41,7 @@ jobs:
         with:
           main-branch-name: master
       - run: yarn install
-      - run: yarn nx run-all --target=build-storybook --parallel=3
+      - run: yarn nx run-many --target=build-storybook --parallel=3
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
