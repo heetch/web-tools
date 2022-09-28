@@ -40,11 +40,17 @@
         "passWithNoTests": true
       }
     },
+    "test-sb": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"http-server dist/storybook/react-forms --port 4400 --silent\" \"wait-on tcp:4400 && test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400\""
+      }
+    },
     "test": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400",
+          "nx test-sb react-forms",
           "nx test-jest react-forms"
         ],
         "parallel": false

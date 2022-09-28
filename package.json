@@ -6,6 +6,7 @@
   "scripts": {
     "react-forms:build": "nx build react-forms",
     "react-forms:storybook": "nx storybook react-forms",
+    "react-forms:test": "nx test-jest react-forms && test-storybook -c packages/react-forms/.storybook --url=http://localhost:4400",
     "react-forms:gen:stories": "nx g @nrwl/react:stories --project react-forms --generateCypressSpecs false",
     "react-forms:gen:component": "nx g c --project react-forms --skipTests true --style styled-components --export true"
   },
@@ -43,12 +44,14 @@
     "babel-jest": "28.1.1",
     "babel-loader": "8.1.0",
     "babel-plugin-styled-components": "1.10.7",
+    "concurrently": "^7.4.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsx-a11y": "6.6.1",
     "eslint-plugin-react": "7.31.8",
     "eslint-plugin-react-hooks": "4.6.0",
+    "http-server": "^14.1.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "nx": "14.7.13",
@@ -57,7 +60,8 @@
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.8.2",
-    "url-loader": "^3.0.0"
+    "url-loader": "^3.0.0",
+    "wait-on": "^6.0.1"
   },
   "workspaces": [
     "packages/**"

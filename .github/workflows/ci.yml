@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  main:
+  lint-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,8 +14,27 @@ jobs:
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v3
       - run: yarn install
-      - run: npx nx workspace-lint
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx affected --target=build --parallel=3
+      - run: yarn nx workspace-lint
+      - run: yarn nx format:check
+      - run: yarn nx affected --target=lint --parallel=3
+      - run: yarn nx affected --target=build-storybook --parallel=3
+      - run: yarn nx affected --target=test --parallel=3
+
+  deploy-storybook:
+    if: github.ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - run: yarn install
+      - run: yarn nx affected --target=build-storybook --parallel=3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main
+          FOLDER: dist/storybook
+          CLEAN: true
+          TARGET_FOLDER: docs
