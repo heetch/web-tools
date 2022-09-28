@@ -1,7 +1,5 @@
-# react-forms
+# React Forms
 
-This library was generated with [Nx](https://nx.dev).
+This library allows you to build and render a form in a React application, just by providing some configuration defining fields, validation rules, layout and a submit function.
 
-## Running unit tests
-
-Run `nx test react-forms` to execute the unit tests via [Jest](https://jestjs.io).
+Full documentation on StoryBook: 
