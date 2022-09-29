@@ -90,6 +90,8 @@ export function FormFieldFileRenderer({
           ? (fieldProps.value as File[])
           : undefined;
 
+        const showAddButton = field.multiple || (files || []).length < 1;
+
         const deleteFile = (file: File) => {
           const remainingFiles = files?.filter((f) => f !== file) || [];
           fieldProps.onChange(
@@ -130,14 +132,16 @@ export function FormFieldFileRenderer({
                   onChange={(e) => addFiles(e.target.files)}
                   className={classNames.field.file.input}
                 />
-                <Button
-                  variant="text"
-                  onClick={() => fileInputRef.current?.click()}
-                  className={classNames.field.file.add_button}
-                >
-                  <Icon icon="IconPlus" size="s" />
-                  {placeholder}
-                </Button>
+                {showAddButton && (
+                  <Button
+                    variant="text"
+                    onClick={() => fileInputRef.current?.click()}
+                    className={classNames.field.file.add_button}
+                  >
+                    <Icon icon="IconPlus" size="s" />
+                    {placeholder}
+                  </Button>
+                )}
               </FileInputWrapper>
             </FileFieldWrapper>
             {helper && <Helper>{helper}</Helper>}

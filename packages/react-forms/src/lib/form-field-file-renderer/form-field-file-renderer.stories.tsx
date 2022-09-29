@@ -52,6 +52,11 @@ Default.args = {
   field: base,
 };
 
+export const Multiple = Template.bind({});
+Multiple.args = {
+  field: { ...base, multiple: true },
+};
+
 export const LabelAsPlaceholder = Template.bind({});
 LabelAsPlaceholder.storyName = 'Label as placeholder';
 LabelAsPlaceholder.args = {
@@ -61,14 +66,20 @@ LabelAsPlaceholder.args = {
 
 export const Helper = Template.bind({});
 Helper.args = {
-  field: { ...base, placeholder: 'Add images', helper: 'With a helper' },
+  field: {
+    ...base,
+    placeholder: 'Add images',
+    helper: 'With a helper',
+  },
 };
 
 export const Validation = Template.bind({});
 Validation.args = {
   field: {
     ...base,
+    multiple: true,
     placeholder: 'Add images',
+    accepts: 'image/*',
     validators: [
       {
         type: 'required',
