@@ -13,7 +13,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn nx build react-forms
-      - run: cd dist/react-forms
+      - run: cd dist/packages/react-forms
       - run: npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
