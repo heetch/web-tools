@@ -13,7 +13,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn nx build react-forms
-      - run: npm publish
+      - run: npm publish --access public
         working-directory: dist/packages/react-forms
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

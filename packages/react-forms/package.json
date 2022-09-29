@@ -1,7 +1,6 @@
 {
   "name": "@heetch/react-forms",
   "version": "0.0.1",
-  "private": false,
   "license": "MIT",
   "author": "Heetch"
 }
