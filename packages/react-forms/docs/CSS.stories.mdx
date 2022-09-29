@@ -1,0 +1,47 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="CSS" />
+
+# CSS
+
+Although this library takes a very opinionated approach about rendering the form and handling its layout on screen, it tries to stay opened to customization.
+That is why specific CSS classes are exposed at all levels of the form, so that you can write custom CSS on top of it.
+
+## At form level
+
+Four classes are exposed for the form itself and its layout:
+
+- `rf-form` on the form component itself
+- `rf-submit` on the submit button
+- `rf-layout-row` on each row of the form's layout
+- `rf-layout-cell` on each cell within a row
+
+## At field level
+
+Each field type exposes classes on its component itself, and on inner parts for some of them.
+
+### Boolean fields
+
+All boolean fields have the `rf-field-boolean` class, and another class depending on their format: either `rf-field-boolean-checkbox` or `rf-field-boolean-toggle`.
+
+### Date fields
+
+All date fields have the `rf-field-date` class, and the ones with a `date-time` format also have the `rf-field-date-datetime` class.
+
+### File fields
+
+The file fields themselves have the `rf-field-file` class. Inner parts expose other classes:
+
+- The list of files currently selected has the `rf-field-file-list` class
+- Each file in the files list has the `rf-field-file-item` class
+- The wrapper element around the `<input>` element (which is hidden) and the _Add_ button has the `rf-field-file-input-wrapper` class
+- The hidden `<input>` element has the `rf-field-file-input` class
+- The _Add_ button has the `rf-field-file-add-btn` class
+
+### Number fields
+
+Number fields have the `rf-field-number` class.
+
+### String fields
+
+All string fields have the `rf-field-string` class, and another class depending on their format: either `rf-field-string-line`, `rf-field-string-text` or `rf-field-string-select`.

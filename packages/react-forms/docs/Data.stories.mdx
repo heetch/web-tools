@@ -1,0 +1,25 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Data flow" />
+
+# Data flow
+
+The form configuration expects a submit function, and can also be provided with initial data to fill the form fields.
+
+### Submit function
+
+The submit function's behaviour is totally up to the caller choice. The only constraint is it must be an asynchronous function which takes as a parameter the values of the form at the time of submission.
+
+```
+{
+  onSubmit: async (values) => { console.log(values); }
+}
+```
+
+### Initial values
+
+The `values` property allows the caller to specify initial values for some of the fields (for instance when the form is used to edit a record).
+
+<Canvas>
+  <Story id="components-form--initial-values" />
+</Canvas>

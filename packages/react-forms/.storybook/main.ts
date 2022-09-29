@@ -8,7 +8,8 @@ const config: StorybookConfig = {
 
   stories: [
     ...rootMain.stories,
-    '../docs/**/*.mdx',
+    '../docs/*.stories.mdx',
+    '../docs/**/*.stories.mdx',
     '../src/lib/**/*.stories.mdx',
     '../src/lib/**/*.stories.@(js|jsx|ts|tsx)',
   ],
@@ -24,5 +25,5 @@ const config: StorybookConfig = {
     return config;
   },
 };
-
+console.log(config.stories);
 module.exports = config;

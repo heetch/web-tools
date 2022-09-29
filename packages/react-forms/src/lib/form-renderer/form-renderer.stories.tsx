@@ -182,7 +182,12 @@ Validation.args = {
       ],
     },
   ],
-  values: { 'notifications-delay': 0 },
+  values: {
+    name: 'John X',
+    email: 'john.x@mail.com',
+    notifications: true,
+    'notifications-delay': 0,
+  },
   validators: [
     {
       validator: (values) => {
@@ -249,23 +254,7 @@ Validation.args = {
   ],
 };
 Validation.play = async () => {
-  await sleep(100);
-  await userEvent.type(
-    screen.getByLabelText('Name *', {
-      selector: 'input',
-    }),
-    'John X'
-  );
-  await userEvent.type(
-    screen.getByLabelText('E-mail *', {
-      selector: 'input',
-    }),
-    'john.x@mail.com'
-  );
-  await userEvent.click(
-    screen.getByLabelText('Enable notifications', { selector: 'input' })
-  );
-  await sleep(100);
+  await sleep(500);
   await userEvent.click(screen.getByText('Submit'));
 };
 

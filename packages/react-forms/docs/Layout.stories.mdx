@@ -1,0 +1,73 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Layout" />
+
+# Layout
+
+Using a simple configuration object, the layout of the form can be organized in rows, split in cells, and allowing to specify width constraints on a per-cell basis.
+
+Example configuration:
+
+```
+{
+  layout=[
+    {
+      "cells": [
+        {
+          "field": "name"
+        },
+        {
+          "field": "email"
+        }
+      ]
+    },
+    {
+      "cells": [
+        {
+          "field": "country",
+          "widthConstraint": 3
+        },
+        {
+          "field": "birthdate",
+          "widthConstraint": 2
+        }
+      ]
+    },
+    {
+      "cells": [
+        {
+          "field": "notifications",
+          "widthConstraint": "200px"
+        },
+        {
+          "field": "notifications-delay"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The `field` property must match a field `id`, otherwise it will be ignored.
+
+The `widthConstraint` can either be a fixed size in pixels (e.g. `120px`) or a number, being a coefficient of the total width minus the static widths (`1` being the default). For instance, the following config will give 60 pixels to field `age`, 1/3 of the remaining width to `phone`, and 2/3 of the remaining width to `name`:
+
+```
+[
+  {
+    "field": "age",
+    "widthConstraint": "60px"
+  },
+  {
+    "field": "phone"
+  },
+  {
+    "field": "name",
+    "widthConstraint": 2
+  }
+]
+```
+
+<Canvas>
+  <Story id="components-layout--width-constraints" />
+</Canvas>

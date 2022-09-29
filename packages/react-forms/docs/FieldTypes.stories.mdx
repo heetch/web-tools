@@ -1,0 +1,165 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Field types" />
+
+# Field types
+
+In forms, you can use various types of fields, each one offering a range of customization: different formats, validation rules, and styling rules.
+
+## Boolean fields
+
+Boolean fields output `true` or `false` values, and are rendered on screen by either a checkbox or a toggle.
+
+<Canvas>
+  <Story id="components-fields-boolean--default" />
+</Canvas>
+
+This field type doesn't have a lot of options, although it shares some common ones with the other fields: [helpers](/story/components-fields-boolean--helper) and [function validators](/story/components-fields-boolean--validation).
+
+## Number fields
+
+You can use either [decimal](/story/components-fields-number--decimal) or [integer](/story/components-fields-number--integer) number fields, with appropriate validation built-in.
+
+<Canvas>
+  <Story id="components-fields-number--integer" />
+</Canvas>
+
+These fields accept two validators specific to numbers: `min` and `max`:
+
+```
+{
+  validators: [
+    {
+      type: 'min',
+      parameter: 0
+    },
+    {
+      type: 'max',
+      parameter: 10
+    }
+  ]
+}
+```
+
+## Text fields
+
+Text fields are probably the most common type of fields in forms, and in this library these are the ones offering the widest range of control. The most important is the format, which will impact both the rendering and the built-in validation.
+
+### Formats
+
+Let's look at each format in details, and which specific options it provides:
+
+#### Single line
+
+The `line` format renders a basic text field.
+
+<Canvas>
+  <Story id="components-fields-string--default" />
+</Canvas>
+
+#### Text area
+
+The `text` format renders a text area.
+
+<Canvas>
+  <Story id="components-fields-string--text" />
+</Canvas>
+
+#### UUID
+
+The `uuid` format renders a text input with a built-in validation against the UUID v4 format.
+
+<Canvas>
+  <Story id="components-fields-string--uuid" />
+</Canvas>
+
+#### E-mail
+
+The `email` format renders a text input with a built-in validation against e-mail addresses format.
+
+<Canvas>
+  <Story id="components-fields-string--email" />
+</Canvas>
+
+#### Select
+
+The `select` format renders a dropdown, allowing to restrict the value to a closed list. It expects to be configured with a list of options, with values and labels.
+
+<Canvas>
+  <Story id="components-fields-string--select" />
+</Canvas>
+
+### Validation
+
+Text fields accept two specific validators: `max_size` to limit the number of characters allowed in the field, and `regex` to validate the value against a pattern.
+
+<Canvas>
+  <Story id="components-fields-string--validation" />
+</Canvas>
+
+## Dates
+
+Date fields show a calendar component to let the user select a date. They exist in two formats: `date` and `date-time`.
+
+### Date only
+
+<Canvas>
+  <Story id="components-fields-date--default" />
+</Canvas>
+
+### Date and time
+
+<Canvas>
+  <Story id="components-fields-date--date-time" />
+</Canvas>
+
+### Validation
+
+The `min` and `max` validators already mentioned about number fields are also available for dates. Their parameter accept either `Date` object or strings that are parseable into valid dates:
+
+```
+{
+  validators: [
+    {
+      type: 'min',
+      parameter: new Date()
+    },
+    {
+      type: 'max',
+      parameter: '2099-12-31'
+    }
+  ]
+}
+```
+
+## Files
+
+File fields allow to add one or more files to be uploaded from the user's device. They can be restricted to specific mime types, and accept validators for max size of each file (in megabytes) and for max number of files.
+
+### Single file
+
+<Canvas>
+  <Story id="components-fields-file--default" />
+</Canvas>
+
+
+### Multiple files and validation
+
+<Canvas>
+  <Story id="components-fields-file--validation" />
+</Canvas>
+
+```
+{
+  validators: [
+    {
+      type: 'max_size',
+      parameter: 0.5,
+      error_message: 'Max. 500kB per file',
+    },
+    { type: 'max', parameter: 2, error_message: 'Max. 2 files' },
+  ],
+}
+```
+
+

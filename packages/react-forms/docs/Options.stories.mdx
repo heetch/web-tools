@@ -1,0 +1,106 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Options and texts" />
+
+# Options and custom texts
+
+<br/>
+
+## Options
+
+Some options can be applied to the whole form, and will be taken into account by each field type accordingly.
+
+| Option                     | Type      | Description                                                                           |
+|----------------------------|-----------|---------------------------------------------------------------------------------------|
+| `showLabelsAsPlaceholders` | `boolean` | Don't show labels above fields, but inside them (where placeholder would normally go) |
+| `iconColor`                | `string`  | CSS color string to be applied to some icons (like the calendar icon of date fields)  |
+| `showRequiredAsterisk`     | `boolean` | Allow to automatically add a * to labels of fields having the `required` validator    |
+
+
+### Labels as placeholders
+
+<Canvas>
+  <Story id="components-form--label-as-placeholder" />
+</Canvas>
+
+### Icon color
+
+<Canvas>
+  <Story id="components-fields-date--icon-color" />
+</Canvas>
+
+### Asterisks
+
+The basic form example has this option activated:
+
+<Canvas>
+  <Story id="components-form--basic" />
+</Canvas>
+
+## Texts
+
+### At form level
+
+The library provides its own default texts for the submit button label and validation errors:
+
+```
+{
+  submit: 'Submit',
+  errors: {
+    required: 'This field is mandatory',
+    regex: 'Bad format',
+    min: {
+      number: (min) => `Minimum: ${min}`,
+      date: (min) => `Minimum: ${min.toLocaleDateString('fr-FR')}`,
+    },
+    max: {
+      number: (max) => `Maximum: ${max}`,
+      date: (max) => `Maximum: ${max.toLocaleDateString('fr-FR')}`,
+    },
+    max_size: {
+      string: (size) => `Maximum: ${size} characters`,
+      file: (size) => `Maximum file size: ${size}MB`,
+    },
+    integer: 'Expected: integer',
+    number: 'Expected: number',
+    uuid: 'Expected: valid UUID',
+    email: 'Expected: valid e-mail',
+  },
+}
+```
+
+These texts can be customized for the whole form, by providing parts of this configuration object through the `texts` property:
+
+```
+{
+  texts: {
+    submit: 'Send data',
+    errors: {
+      required: 'Custom required error',
+      max_size: {
+        string: (x) => `Custom max size error (${x} letters)`,
+      },
+    },
+  }
+}
+```
+See the result [here](/story/components-form--custom-texts)
+
+
+### At field level
+
+For any field's validators, specific error messages can be set:
+
+```
+[
+  {
+    type: 'required',
+    error_message: 'Mandatory!',
+  },
+  {
+    type: 'function',
+    name: 'the_answer',
+    parameter: (value) => value === 42 || 'This is not the correct answer',
+  },
+]
+```

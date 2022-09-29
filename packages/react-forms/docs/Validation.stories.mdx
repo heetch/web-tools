@@ -1,0 +1,216 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Validation" />
+
+# Validation
+
+With validators you can validate fields on change, validate the whole form on submit, and even implement auto-fill of fields based on the value of a validated field!
+
+### Validation on submit
+
+When the user clicks submit, before the form calls the `onSubmit` function, it will first execute all the validators provided, if any. In case of error(s) the submission will be cancelled and the errors displayed in the form.
+
+<Canvas>
+  <Story id="components-form--validation" />
+</Canvas>
+
+```
+{
+  validators: [
+    {
+      validator: (values) => {
+        if (
+          typeof values['name'] === 'string' &&
+          values['name'].includes('X')
+        ) {
+          return {
+            errors: [
+              {
+                field: 'name',
+                error: 'Unknowns are forbidden',
+              },
+            ],
+          };
+        }
+
+        return { errors: [] };
+      },
+    },
+    {
+      validator: (values) => {
+        if (
+          typeof values['email'] === 'string' &&
+          values['email'].includes('x')
+        ) {
+          return {
+            errors: [
+              {
+                field: 'email',
+                error: 'No "x" in emails',
+              },
+            ],
+          };
+        }
+
+        return { errors: [] };
+      },
+    },
+    {
+      async: true,
+      validator: (values) =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            if (
+              values['notifications'] === true &&
+              (values['notifications-delay'] as number) < 1
+            ) {
+              resolve({
+                errors: [
+                  {
+                    field: 'notifications-delay',
+                    error: 'Must be > 1 if notifications are enabled',
+                  },
+                ],
+              });
+            }
+            resolve({
+              errors: [],
+            });
+          }, 1000);
+        }),
+    },
+  ]
+}
+```
+
+### Field validation
+
+All field types accept some common validators, and validators that are specific to them.
+
+All validators (except `function`) accept a custom `error_message` to be displayed when the validation fails.
+
+#### Common validators
+
+##### `required`
+
+This validator takes no parameter, and just checks if the value is set and not empty.
+
+##### `function`
+
+This validator let the caller define any validation logic they want, even using asynchronous code to perform the validation. A name can be provided if there are several function validators.
+
+The validation result is based on what the function returns: if it's `true`, validation succeeds. If it's `false` the validation fails and no error message is displayed (just the red hint). If a string is returned, validation fails and this string is used as an error message.
+
+Validation functions can be synchronous or asynchronous:
+
+```
+[
+  {
+    type: 'function',
+    name: 'my_sync_validator',
+    parameter: (value) => value === 'foo' || 'I want foo!'
+  },
+  {
+    type: 'function',
+    name: 'my_async_validator',
+    async: true,
+    parameter: async (value) => {
+      const isValid = await performValidation(value);
+      return isValid || 'Try again...';
+    }
+  }
+]
+```
+
+#### Number field validators
+
+Numbers can be validated against a `min` or `max` value:
+
+```
+[
+  {
+    type: 'min',
+    parameter: 0,
+    error_message: 'Expected value between 0 and 10'
+  },
+  {
+    type: 'max',
+    parameter: 10,
+    error_message: 'Expected value between 0 and 10'
+  }
+]
+```
+
+#### Text field validators
+
+Strings can be limited to a maximum number of character (`max_size`), and be validated against a pattern expressed as a regular expression:
+
+```
+[
+  {
+    type: 'max_size',
+    parameter: 100,
+    error_message: 'Max. 100 characters'
+  },
+  {
+    type: 'regex',
+    parameter: /^[a-zA-Z]*$/,
+    error_message: 'Only letters'
+  }
+]
+```
+
+#### Date field validators
+
+Dates can be validated against a `min` or `max` value:
+
+```
+[
+  {
+    type: 'min',
+    parameter: new Date()
+  },
+  {
+    type: 'max',
+    parameter: '2099-12-31'
+  }
+]
+```
+
+
+#### File field validators
+
+File fields can be limited to a maximum number of files (`max`) and a maximum size (in megabytes) of each file (`max_size`):
+
+```
+[
+  { type: 'max_size', parameter: 5, error_message: 'Max. 5MB per file' },
+  { type: 'max', parameter: 2, error_message: 'Max. 2 files' },
+]
+```
+
+### Autofill feature
+
+Field validators of type `function` have a special feature, that allows you to handle a scenario like this one:
+
+> When the user fills the _Registration number_ field in form about a vehicle, the value is validated asynchronously using a distant service.<br/>
+> If the value is valid, this service sends back data about the vehicle brand, model, registration date...And we want this data to be used to fill other fields of the form automatically.
+
+To achieve that, validation functions takes a second parameter: a `setValue` function, that can be used like this:
+
+```
+{
+  validators: [
+    {
+      type: 'function',
+      async: true,
+      parameter: async (value, setValue) => {
+        const { error, data } = await fetchVehicleRegistrationData(value);
+        if (error) return error;
+        data.forEach(({ field, value }) => setValue(field, value));
+        return true;
+      }
+    }
+  ]
+}
+```
