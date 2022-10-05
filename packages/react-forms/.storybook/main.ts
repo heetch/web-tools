@@ -25,5 +25,5 @@ const config: StorybookConfig = {
     return config;
   },
 };
-console.log(config.stories);
+
 module.exports = config;
