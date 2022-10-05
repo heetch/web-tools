@@ -1861,9 +1861,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heetch/flamingo-react@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@heetch/flamingo-react@npm:5.1.0"
+"@heetch/flamingo-react@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "@heetch/flamingo-react@npm:5.2.0"
   dependencies:
     "@popperjs/core": ^2.9.2
     "@storybook/addon-backgrounds": ^6.3.9
@@ -1878,7 +1878,7 @@ __metadata:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
     styled-components: ^5.0.1
-  checksum: 579c6a2e278d4a3ac675186c5a94ccd23b6c72809f384bf82cac3de9dce0d7c4736f71a463d70979f7a67bacb06fba4163655ec0b17bdf707913802c475266d4
+  checksum: 83f2fd701b27a2aee943b7ae543348980455a3f345aecd0b0b64f3743d056b1d21fa02318748a8702ff6063a9a3816a1adecffe6a4c0d32b5019b17550d74271
   languageName: node
   linkType: hard
 
@@ -1894,7 +1894,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.12.13
     "@babel/preset-typescript": 7.12.13
-    "@heetch/flamingo-react": ^5.1.0
+    "@heetch/flamingo-react": ^5.2.0
     "@nrwl/cli": 14.7.13
     "@nrwl/eslint-plugin-nx": 14.7.13
     "@nrwl/jest": 14.7.13
