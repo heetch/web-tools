@@ -31,7 +31,7 @@
     "@storybook/react": "~6.5.9",
     "@storybook/test-runner": "^0.7.1",
     "@storybook/testing-library": "^0.0.13",
-    "@svgr/webpack": "^5.4.0",
+    "@svgr/webpack": "^6.4.0",
     "@testing-library/react": "13.4.0",
     "@types/jest": "28.1.1",
     "@types/node": "18.7.18",
