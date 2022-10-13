@@ -29,4 +29,7 @@ We currently have 1 package inside this repository:
 This package being a library of components, it's dev mode relies on [StoryBook](https://storybook.js.org/docs/react/get-started/introduction).
 In order to work on `react-forms`, run this command: `$ yarn nx storybook react-forms`. A shortcut has also been added: `$ yarn react-forms:storybook`. 
 
+## Contributing
 
+If you intend to contribute to this repository, please read our [contribution guide](https://github.com/heetch/web-tools/blob/master/CONTRIBUTING.md). 
+We also expect you to adhere to our [code of conduct](https://github.com/heetch/web-tools/blob/master/CODE_OF_CONDUCT.md). 
