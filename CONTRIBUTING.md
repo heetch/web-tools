@@ -26,6 +26,10 @@ By following the guidelines below, you can contribute by proposing some code cha
 
 ## Getting started
 
+### Tooling
+
+This monorepo is powered by [Nx](https://nx.dev). We recommend you take a look at [Nx Docs](https://nx.dev/getting-started/intro) to understand how it is organized and what tools it offers to the developer.
+
 ### Fork and create a branch
 
 Start by [forking this repository](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. For instance, assuming you are working on issue #123, you could name your branch `123-add-color-picker-field`.
