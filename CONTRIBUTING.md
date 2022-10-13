@@ -8,7 +8,7 @@ Following these guidelines helps to communicate that you respect the time of the
 
 ## What kind of contributions could you make?
 
-There are a lot of ways one can contribute to an open source project. From bugs reporting, to ideas of improvements, up to concrete changes or additions submitted as a pull request, all contributions are valuable!
+There are a lot of ways one can contribute to an open source project. From bug reporting, to ideas of improvements, up to concrete changes or additions submitted as a pull request, all contributions are valuable!
 
 ### Reporting bugs
 
