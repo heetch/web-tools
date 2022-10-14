@@ -68,7 +68,9 @@
     "wait-on": "^6.0.1"
   },
   "resolutions": {
-    "meow": "11.0.0"
+    "meow": "11.0.0",
+    "chokidar": "3.5.3",
+    "globby": "11.1.0"
   },
   "workspaces": [
     "packages/**"
