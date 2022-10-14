@@ -67,6 +67,9 @@
     "url-loader": "^3.0.0",
     "wait-on": "^6.0.1"
   },
+  "resolutions": {
+    "meow": "11.0.0"
+  },
   "workspaces": [
     "packages/**"
   ],
