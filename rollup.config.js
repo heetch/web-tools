@@ -6,5 +6,6 @@ module.exports = function getRollupOptions(options) {
   return {
     ...nxOptions,
     plugins: [...(nxOptions.plugins || []), terser()],
+    external: ['react', 'react-dom'],
   };
 };
