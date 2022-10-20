@@ -1885,6 +1885,13 @@ __metadata:
 "@heetch/react-forms@workspace:packages/react-forms":
   version: 0.0.0-use.local
   resolution: "@heetch/react-forms@workspace:packages/react-forms"
+  peerDependencies:
+    "@heetch/flamingo-react": ^5.2.0
+    "@react-hook/window-size": ^3.1.1
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-hook-form: ^7.35.0
+    styled-components: 5.3.5
   languageName: unknown
   linkType: soft
 
