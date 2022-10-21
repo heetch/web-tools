@@ -6,6 +6,12 @@ module.exports = function getRollupOptions(options) {
   return {
     ...nxOptions,
     plugins: [...(nxOptions.plugins || []), terser()],
-    external: ['react', 'react-dom'],
+    external: [
+      'react',
+      'react-dom',
+      '@heetch/flamingo-react',
+      '@react-hook/window-size',
+      'react-hook-form',
+    ],
   };
 };

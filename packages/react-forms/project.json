@@ -13,7 +13,7 @@
         "project": "packages/react-forms/package.json",
         "entryFile": "packages/react-forms/src/index.ts",
         "external": ["react/jsx-runtime"],
-        "rollupConfig": "rollup.config",
+        "rollupConfig": "packages/react-forms/rollup.config",
         "compiler": "babel",
         "extractCss": "style.css",
         "assets": [

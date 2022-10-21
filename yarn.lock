@@ -1885,13 +1885,16 @@ __metadata:
 "@heetch/react-forms@workspace:packages/react-forms":
   version: 0.0.0-use.local
   resolution: "@heetch/react-forms@workspace:packages/react-forms"
+  dependencies:
+    "@react-hook/window-size": ^3.1.1
+    react-hook-form: ^7.35.0
   peerDependencies:
     "@heetch/flamingo-react": ^5.2.0
     "@react-hook/window-size": ^3.1.1
     react: 18.2.0
     react-dom: 18.2.0
     react-hook-form: ^7.35.0
-    styled-components: 5.3.5
+    styled-components: ^5.1.0
   languageName: unknown
   linkType: soft
 
@@ -1910,7 +1913,6 @@ __metadata:
     "@nrwl/storybook": 14.8.4
     "@nrwl/web": 14.8.4
     "@nrwl/workspace": 14.8.4
-    "@react-hook/window-size": ^3.1.1
     "@storybook/addon-actions": ^6.5.12
     "@storybook/addon-essentials": ~6.5.9
     "@storybook/addon-interactions": ^6.5.12
@@ -1949,12 +1951,11 @@ __metadata:
     prettier: ^2.6.2
     react: 18.2.0
     react-dom: 18.2.0
-    react-hook-form: ^7.35.0
     react-is: 18.2.0
     react-test-renderer: 18.2.0
     regenerator-runtime: 0.13.7
     rollup-plugin-terser: ^7.0.2
-    styled-components: 5.3.5
+    styled-components: ^5.1.0
     ts-jest: 28.0.5
     ts-node: 10.9.1
     tslib: ^2.3.0
@@ -19146,7 +19147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styled-components@npm:5.3.5, styled-components@npm:^5.1.0":
+"styled-components@npm:^5.1.0":
   version: 5.3.5
   resolution: "styled-components@npm:5.3.5"
   dependencies:
