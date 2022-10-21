@@ -1,5 +1,5 @@
 import { FormCell } from '@heetch/react-forms';
-import { CSSProperties, HTMLProps, PropsWithChildren } from 'react';
+import { CSSProperties, HTMLProps, PropsWithChildren, ReactNode } from 'react';
 import { classNames } from '../../utils';
 import styles from './form-layout.module.scss';
 
@@ -17,7 +17,7 @@ export const FormLayout = ({
   );
 };
 
-export const FormLayoutRow = ({ children }: PropsWithChildren) => {
+export const FormLayoutRow = ({ children }: { children?: ReactNode }) => {
   return (
     <div className={[styles['FormLayoutRow'], classNames.layout.row].join(' ')}>
       {children}
