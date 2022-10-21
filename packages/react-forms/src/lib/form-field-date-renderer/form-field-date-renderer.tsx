@@ -14,7 +14,7 @@ import {
   isRequired,
   MOBILE_BREAKPOINT,
 } from '../../utils';
-import { ErrorHelper } from '../styled-components';
+import { ErrorHelper } from '../error-helper/error-helper';
 import {
   FormFieldValidatorCommon,
   FormFieldValidatorDate,

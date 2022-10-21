@@ -1894,7 +1894,6 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-hook-form: ^7.35.0
-    styled-components: ^5.1.0
   languageName: unknown
   linkType: soft
 

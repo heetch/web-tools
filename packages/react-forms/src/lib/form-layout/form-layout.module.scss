@@ -1,0 +1,11 @@
+.FormLayout {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+}
+
+.FormLayoutRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
