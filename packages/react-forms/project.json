@@ -15,6 +15,7 @@
         "external": ["react/jsx-runtime"],
         "rollupConfig": "packages/react-forms/rollup.config",
         "compiler": "babel",
+        "format": ["esm", "cjs"],
         "extractCss": "style.css",
         "assets": [
           {
