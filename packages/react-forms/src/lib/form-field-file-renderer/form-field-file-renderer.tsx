@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldFile } from '../../types/fields';
 import { buildValidationRules, classNames, isRequired } from '../../utils';
@@ -12,50 +11,9 @@ import {
   theme as flamingo,
   UiText,
 } from '@heetch/flamingo-react';
-import { ErrorHelper } from '../styled-components';
+import { ErrorHelper } from '../error-helper/error-helper';
 import { useRef } from 'react';
-
-const FileInputWrapper = styled.div`
-  > input {
-    visibility: hidden;
-    width: 0;
-  }
-
-  > button {
-    margin: 0;
-    padding-left: 0;
-    padding-right: 0;
-    color: ${flamingo.color_v3.type.light};
-    > span {
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  }
-`;
-
-const FileFieldWrapper = styled.div`
-  margin-top: 8px;
-  display: flex;
-  gap: 8px 16px;
-  align-items: center;
-  flex-wrap: wrap;
-`;
-
-const FileItem = styled(UiText).attrs({
-  variant: 'subContent',
-  textColor: flamingo.color_v3.type.default,
-})`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin: 0;
-
-  .f-Icon {
-    margin: 0;
-  }
-`;
+import styles from './form-field-file-renderer.module.scss';
 
 export function FormFieldFileRenderer({
   field,
@@ -107,23 +65,31 @@ export function FormFieldFileRenderer({
         return (
           <div className={classNames.field.file.base}>
             {label && <Label htmlFor={fieldProps.name}>{label}</Label>}
-            <FileFieldWrapper className={classNames.field.file.list}>
+            <div className={classNames.field.file.list}>
               {files?.map((file) => (
-                <FileItem
+                <UiText
                   key={file.name}
-                  className={classNames.field.file.item}
+                  variant="subContent"
+                  textColor={flamingo.color_v3.type.default}
+                  className={[
+                    styles['FileItem'],
+                    classNames.field.file.item,
+                  ].join(' ')}
                 >
                   <IconButton
                     icon="IconTrash"
                     onClick={() => deleteFile(file)}
                   />{' '}
                   <span>{file.name}</span>
-                </FileItem>
+                </UiText>
               ))}
 
-              <FileInputWrapper
+              <div
                 data-testid="file"
-                className={classNames.field.file.input_wrapper}
+                className={[
+                  styles['FileInputWrapper'],
+                  classNames.field.file.input_wrapper,
+                ].join(' ')}
               >
                 <input
                   ref={fileInputRef}
@@ -142,8 +108,8 @@ export function FormFieldFileRenderer({
                     {placeholder}
                   </Button>
                 )}
-              </FileInputWrapper>
-            </FileFieldWrapper>
+              </div>
+            </div>
             {helper && <Helper>{helper}</Helper>}
             {errorHelper && <ErrorHelper>{errorHelper}</ErrorHelper>}
           </div>

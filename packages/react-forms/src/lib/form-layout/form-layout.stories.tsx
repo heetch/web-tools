@@ -1,14 +1,8 @@
-import { Story, Meta } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import { FormLayoutCell, FormLayoutRow } from './form-layout';
-import styled from 'styled-components';
 import { FormCell } from '../../types/layout';
 
 type LayoutStoryProps = { cells: FormCell[] };
-
-const CellContent = styled.div`
-  background-color: lightpink;
-  padding: 4px;
-`;
 
 export default {
   title: 'Components/Layout',
@@ -18,7 +12,14 @@ const Template: Story<LayoutStoryProps> = (args) => (
   <FormLayoutRow>
     {args.cells.map((cell) => (
       <FormLayoutCell key={cell.field} {...cell}>
-        <CellContent>{cell.field}</CellContent>
+        <div
+          style={{
+            backgroundColor: 'lightpink',
+            padding: '4px',
+          }}
+        >
+          {cell.field}
+        </div>
       </FormLayoutCell>
     ))}
   </FormLayoutRow>

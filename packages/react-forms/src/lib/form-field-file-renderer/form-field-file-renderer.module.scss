@@ -1,0 +1,30 @@
+.FileInputWrapper {
+  > input {
+    visibility: hidden;
+    width: 0;
+  }
+
+  > button {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    color: var(--f-color-type-light);
+
+    > span {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+.FileItem {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  .f-Icon {
+    margin: 0;
+  }
+}

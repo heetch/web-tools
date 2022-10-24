@@ -1,39 +1,42 @@
-import styled, { css } from 'styled-components';
 import { FormCell } from '@heetch/react-forms';
-import { PropsWithChildren } from 'react';
+import { CSSProperties, HTMLProps, PropsWithChildren } from 'react';
 import { classNames } from '../../utils';
+import styles from './form-layout.module.scss';
 
-export const FormLayout = styled.form.attrs({ className: classNames.form })`
-  display: flex;
-  gap: 8px;
-  flex-direction: column;
-`;
+export const FormLayout = ({
+  children,
+  ...formProps
+}: PropsWithChildren<HTMLProps<HTMLFormElement>>) => {
+  return (
+    <form
+      className={[styles['FormLayout'], classNames.form].join(' ')}
+      {...formProps}
+    >
+      {children}
+    </form>
+  );
+};
 
-export const FormLayoutRow = styled.div.attrs({
-  className: classNames.layout.row,
-})`
-  display: flex;
-  gap: 8px;
-  justify-content: baseline;
-  align-items: center;
-`;
+export const FormLayoutRow = ({ children }: PropsWithChildren) => {
+  return (
+    <div className={[styles['FormLayoutRow'], classNames.layout.row].join(' ')}>
+      {children}
+    </div>
+  );
+};
 
 export const FormLayoutCell = ({
   widthConstraint,
   children,
 }: PropsWithChildren<FormCell>) => {
-  return <StyledCell widthConstraint={widthConstraint}>{children}</StyledCell>;
-};
-
-const StyledCell = styled.div.attrs({ className: classNames.layout.cell })<
-  Pick<FormCell, 'widthConstraint'>
->`
-  ${({ widthConstraint }) =>
+  const cellStyle: CSSProperties =
     typeof widthConstraint === 'string'
-      ? css`
-          width: ${widthConstraint};
-        `
-      : css`
-          flex: ${widthConstraint || 1};
-        `}
-`;
+      ? { width: widthConstraint }
+      : { flex: widthConstraint || 1 };
+
+  return (
+    <div style={cellStyle} className={classNames.layout.cell}>
+      {children}
+    </div>
+  );
+};
