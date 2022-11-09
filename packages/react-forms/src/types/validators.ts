@@ -67,23 +67,29 @@ export type FormFieldValidatorFile =
 
 type FormFieldValidator_<T extends FormFieldValidatorType> = {
   type: T;
-} & (T extends 'function' ? Record<string, never> : { error_message?: string });
+} & {
+  error_message?: T extends 'function' ? never : string | undefined;
+};
 
-type FormFieldValidatorRequired = FormFieldValidator_<'required'>;
+export type FormFieldValidatorRequired = FormFieldValidator_<'required'>;
 
-type FormFieldValidatorMaxSize = FormFieldValidator_<'max_size'> & {
+export type FormFieldValidatorMaxSize = FormFieldValidator_<'max_size'> & {
   parameter: number;
 };
 
-type FormFieldValidatorRegex = FormFieldValidator_<'regex'> & {
+export type FormFieldValidatorRegex = FormFieldValidator_<'regex'> & {
   parameter: string | RegExp;
 };
 
-type FormFieldValidatorMin<T> = FormFieldValidator_<'min'> & { parameter: T };
+export type FormFieldValidatorMin<T> = FormFieldValidator_<'min'> & {
+  parameter: T;
+};
 
-type FormFieldValidatorMax<T> = FormFieldValidator_<'max'> & { parameter: T };
+export type FormFieldValidatorMax<T> = FormFieldValidator_<'max'> & {
+  parameter: T;
+};
 
-type FormFieldValidatorFunction<T> = FormFieldValidator_<'function'> & {
+export type FormFieldValidatorFunction<T> = FormFieldValidator_<'function'> & {
   name?: string;
 } & (
     | {

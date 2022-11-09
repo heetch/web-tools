@@ -103,7 +103,7 @@ _tests.play = async () => {
     selector: 'input',
   });
   await userEvent.type(input, '1. ', { delay: 50 });
-  expect(input).toHaveStyle({ color: '#cd2703' });
+  expect(input).toHaveStyle({ color: '#e4566f' });
   await userEvent.type(input, '1.5 ', { delay: 50 });
-  expect(input).not.toHaveStyle({ color: '#cd2703' });
+  expect(input).not.toHaveStyle({ color: '#e4566f' });
 };
