@@ -80,6 +80,7 @@ export default {
       showRequiredAsterisk: true,
     },
     onSubmit: action('submit'),
+    onChange: action('change'),
   },
 } as ComponentMeta<typeof FormRenderer>;
 

@@ -10,6 +10,7 @@ export type Form<
   fields: FormField<K>[];
   values: DeepPartial<V>;
   onSubmit: (values: V) => Promise<unknown>;
+  onChange?: (values: DeepPartial<V>) => void;
   validators?: FormValidator<V>[];
   layout?: FormRow<K>[];
   options?: FormOptions;
