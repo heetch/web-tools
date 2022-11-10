@@ -13,21 +13,34 @@ import {
   FormLayoutRow,
 } from '../form-layout/form-layout';
 import { classNames, DEFAULT_TEXTS, injectDefaultTexts } from '../../utils';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function FormRenderer({
   fields,
   values,
   onSubmit,
+  onChange,
   options,
   texts: textsOverrides,
   layout,
   validators,
 }: Form) {
-  const { control, handleSubmit, formState, setError, setValue } = useForm({
-    defaultValues: values,
-    mode: 'onChange',
-  });
+  const { control, handleSubmit, formState, setError, setValue, watch } =
+    useForm({
+      defaultValues: values,
+      mode: 'onChange',
+    });
+
+  const dirtyFields = watch();
+  useEffect(() => {
+    if (typeof onChange !== 'function') return;
+    const dirtyValues = Object.entries(dirtyFields).reduce(
+      (values, [key, value]) =>
+        value !== undefined ? { ...values, [key]: value } : values,
+      {}
+    );
+    onChange(dirtyValues);
+  }, [dirtyFields, onChange]);
 
   const validateAndSubmit = useCallback(
     async (values: FieldValues) => {

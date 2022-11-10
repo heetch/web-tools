@@ -1,7 +1,7 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Helper } from '@heetch/flamingo-react';
 import styles from './error-helper.module.scss';
 
-export const ErrorHelper = ({ children }: PropsWithChildren) => {
+export const ErrorHelper = ({ children }: { children?: ReactNode }) => {
   return <Helper className={styles['ErrorHelper']}>{children}</Helper>;
 };

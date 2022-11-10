@@ -23,3 +23,14 @@ The `values` property allows the caller to specify initial values for some of th
 <Canvas>
   <Story id="components-form--initial-values" />
 </Canvas>
+
+
+### React to changes
+
+You can provide a `onChange` function to the form renderer, to be notified of the internal values of the form without waiting for the submission.
+
+```
+{
+  onChange: (values) => { console.log(values); }
+}
+```
