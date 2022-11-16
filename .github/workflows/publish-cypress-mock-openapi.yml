@@ -1,4 +1,4 @@
-name: Publish @heetch/react-forms
+name: Publish @heetch/cypress-mock-openapi
 on:
   workflow_dispatch:
 jobs:
@@ -12,8 +12,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
       - run: yarn install
-      - run: yarn nx build react-forms
+      - run: yarn nx build cypress-mock-openapi
       - run: npm publish --access public
-        working-directory: dist/packages/react-forms
+        working-directory: dist/packages/cypress-mock-openapi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

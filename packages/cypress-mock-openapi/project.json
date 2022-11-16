@@ -1,0 +1,35 @@
+{
+  "name": "cypress-mock-openapi",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/cypress-mock-openapi/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "mkdir -p dist/packages/cypress-mock-openapi/dist",
+          "cp packages/cypress-mock-openapi/README.md dist/packages/cypress-mock-openapi/",
+          "cp packages/cypress-mock-openapi/LICENSE dist/packages/cypress-mock-openapi/",
+          "cp packages/cypress-mock-openapi/package.json dist/packages/cypress-mock-openapi/",
+          "cp packages/cypress-mock-openapi/src/*.js dist/packages/cypress-mock-openapi/dist/"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/cypress-mock-openapi/src/*.js"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/cypress-mock-openapi",
+        "command": "yarn test"
+      }
+    }
+  },
+  "tags": []
+}

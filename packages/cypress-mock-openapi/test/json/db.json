@@ -1,0 +1,20 @@
+{
+  "users": {},
+  "cards": {
+    "cards": [
+      {
+        "name": "Queen"
+      },
+      {
+        "name": "King"
+      }
+    ]
+  },
+  "dogs": {
+    "dogs": [
+      {
+        "name": "Nala"
+      }
+    ]
+  }
+}

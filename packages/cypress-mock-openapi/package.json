@@ -1,0 +1,25 @@
+{
+  "name": "@heetch/cypress-mock-openapi",
+  "version": "1.0.1",
+  "description": "Cypress command to stub network requests using OpenAPI examples",
+  "main": "./dist/index.js",
+  "repository": "https://github.com/heetch/web-tools",
+  "author": "Heetch",
+  "license": "MIT",
+  "scripts": {
+    "test": "start-test 8080 'cypress run'",
+    "test:open": "start-test 8080 'cypress open'",
+    "start": "json-server --port 8080 ./test/json/db.json --static ./test/public"
+  },
+  "dependencies": {
+    "@stoplight/prism-cli": "^4.2.5",
+    "@stoplight/prism-http": "^4.2.5"
+  },
+  "devDependencies": {
+    "cypress": "^6.0.1",
+    "eslint-plugin-cypress": "^2.11.2",
+    "eslint-plugin-import": "^2.22.1",
+    "json-server": "^0.16.3",
+    "start-server-and-test": "^1.11.6"
+  }
+}
