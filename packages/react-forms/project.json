@@ -1,11 +1,12 @@
 {
+  "name": "react-forms",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/react-forms/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/react-forms",
@@ -35,7 +36,7 @@
     },
     "test-jest": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/react-forms"],
+      "outputs": ["{workspaceRoot}/coverage/packages/react-forms"],
       "options": {
         "jestConfig": "packages/react-forms/jest.config.ts",
         "passWithNoTests": true
@@ -50,10 +51,7 @@
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          "nx test-sb react-forms",
-          "nx test-jest react-forms"
-        ],
+        "commands": ["nx test-sb react-forms", "nx test-jest react-forms"],
         "parallel": false
       }
     },
