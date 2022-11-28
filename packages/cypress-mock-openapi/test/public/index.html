@@ -1,0 +1,14 @@
+<html></html>
+<head><title>Cypress fetch tests</title></head>
+<body>
+  <h1>Fetch mock tests</h1>
+  <script type="text/javascript">
+  (function(){
+    const users = fetch('http://api-prefix/users').then(res => res.json()).then(data => {
+      let list = ``
+      data.users.forEach(user => list += `${user.name} (${user.age}) <br/>`)
+      document.body.innerHTML = list;
+    })
+  }())
+  </script>
+</body>

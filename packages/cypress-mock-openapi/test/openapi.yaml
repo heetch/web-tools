@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Testing cypress package
+  description: Some examples to test packages
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: A list of users
+      responses:
+        '200':
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        age:
+                          type: number
+                      required:
+                        - name
+                        - age
+              examples:
+                OK:
+                  value:
+                    users:
+                      - name: Luke
+                        age: 31
+                      - name: Han
+                        age: 40
+                      - name: Chewy
+                        age: 50
+                EMPTY:
+                  value:
+                    users: []
+  /cards:
+    get:
+      summary: Returns a list of cards.
+      description: A list of cards
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A JSON array of card names
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                      required:
+                        - name
+              examples:
+                OK:
+                  value:
+                    users:
+                      - name: Queen
+                      - name: King
+                      - name: Joker
+  /dogs:
+    parameters:
+      - schema:
+          type: string
+        name: Authorization
+        in: header
+        required: true
+    get:
+      summary: Returns a list of dogs.
+      description: A list of great dogs
+      responses:
+        '200':
+          description: A JSON array of dog names
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                      required:
+                        - name
+              examples:
+                OK:
+                  value:
+                    users:
+                      - name: Paco

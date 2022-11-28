@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@heetch/cypress-mock-openapi": [
+        "packages/cypress-mock-openapi/src/index.ts"
+      ],
       "@heetch/react-forms": ["packages/react-forms/src/index.ts"]
     }
   },

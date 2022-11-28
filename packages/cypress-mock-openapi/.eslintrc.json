@@ -1,0 +1,29 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {
+        "no-prototype-builtins": 0,
+        "no-param-reassign": 0,
+        "import/prefer-default-export": 0,
+        "import/no-default-export": 0
+      },
+      "env": {
+        "browser": false,
+        "es6": true,
+        "cypress/globals": true
+      },
+      "plugins": ["cypress"]
+    }
+  ]
+}
