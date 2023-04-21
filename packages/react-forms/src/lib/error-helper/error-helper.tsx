@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Helper } from '@heetch/flamingo-react';
 import styles from './error-helper.module.scss';
 

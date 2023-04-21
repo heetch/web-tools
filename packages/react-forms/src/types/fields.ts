@@ -28,6 +28,7 @@ type FormField_<T extends FormFieldType, K extends string> = {
   label: string;
   placeholder?: string;
   helper?: string;
+  disabled?: boolean;
 };
 
 export type FormFieldBoolean<K extends string = string> = FormField_<

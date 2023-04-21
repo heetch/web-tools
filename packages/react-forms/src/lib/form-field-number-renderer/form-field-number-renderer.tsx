@@ -101,6 +101,7 @@ function NumberFieldRenderer({
     min,
     max,
     className: classNames.field.number,
+    disabled: field.disabled,
   };
 
   return <InputField {...props} />;

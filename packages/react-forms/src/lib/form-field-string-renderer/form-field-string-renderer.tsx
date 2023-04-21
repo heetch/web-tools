@@ -37,6 +37,7 @@ export function FormFieldStringRenderer({
           placeholder,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
+          disabled: field.disabled,
         };
 
         switch (field.format) {

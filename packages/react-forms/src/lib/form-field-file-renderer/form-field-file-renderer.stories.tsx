@@ -94,3 +94,11 @@ Validation.args = {
     ],
   },
 };
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  field: {
+    ...base,
+    disabled: true,
+  },
+};
