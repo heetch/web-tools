@@ -127,13 +127,11 @@ function buildValidationRulesNumber(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        number: (value: number) => {
-          console.log(value, typeof value, isNaN(value));
-          return value === undefined ||
+        number: (value: number) =>
+          value === undefined ||
           !isNaN(value) ||
           texts?.errors?.number ||
-          false;
-        },
+          false,
       },
     };
   }
