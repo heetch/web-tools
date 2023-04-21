@@ -64,9 +64,19 @@ function NumberFieldRenderer({
   );
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    fieldProps.onChange(
-      e.target.value === '' ? undefined : parseFloat(e.target.value)
-    );
+    if (e.target.value === '') {
+      if (e.target.validity.valid) {
+        // Actually empty
+        fieldProps.onChange(undefined);
+      } else {
+        // Not empty but something that cannot be parsed as a number
+        fieldProps.onChange(NaN);
+      }
+    } else {
+      fieldProps.onChange(
+        parseFloat(e.target.value));
+    }
+
     setValue(e.target.value);
   };
 

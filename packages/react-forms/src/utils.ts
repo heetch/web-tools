@@ -116,7 +116,10 @@ function buildValidationRulesNumber(
       validate: {
         ...(baseRules?.validate || {}),
         integer: (value: number) =>
-          Number.isInteger(value) || texts?.errors?.integer || false,
+          value === undefined ||
+          Number.isInteger(value) ||
+          texts?.errors?.integer ||
+          false,
       },
     };
   } else {
@@ -124,8 +127,13 @@ function buildValidationRulesNumber(
       ...(baseRules || {}),
       validate: {
         ...(baseRules?.validate || {}),
-        number: (value: number) =>
-          !isNaN(value) || texts?.errors?.number || false,
+        number: (value: number) => {
+          console.log(value, typeof value, isNaN(value));
+          return value === undefined ||
+          !isNaN(value) ||
+          texts?.errors?.number ||
+          false;
+        },
       },
     };
   }

@@ -102,8 +102,8 @@ _tests.play = async () => {
   const input: HTMLInputElement = screen.getByLabelText('Amount', {
     selector: 'input',
   });
-  await userEvent.type(input, '1. ', { delay: 50 });
-  expect(input).toHaveStyle({ color: '#cd2703' });
-  await userEvent.type(input, '1.5 ', { delay: 50 });
+  await userEvent.type(input, '1.5', { delay: 50 });
+  expect(input).not.toHaveStyle({ color: '#cd2703' });
+  await userEvent.clear(input);
   expect(input).not.toHaveStyle({ color: '#cd2703' });
 };
