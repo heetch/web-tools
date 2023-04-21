@@ -51,6 +51,7 @@ export function FormFieldDateRenderer({
           value: fieldProps.value !== undefined ? fieldProps.value : '',
           placeholder: placeholder || '',
           invalid: !!fieldState?.error,
+          disabled: field.disabled,
         };
 
         const helper = fieldState?.error ? undefined : field.helper;

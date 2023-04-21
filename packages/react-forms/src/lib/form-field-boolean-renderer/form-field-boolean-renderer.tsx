@@ -29,6 +29,7 @@ export function FormFieldBooleanRenderer({
           checked: fieldProps.value,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
           invalid: !!fieldState?.error,
+          disabled: field.disabled,
         };
 
         return field.format === 'toggle' ? (

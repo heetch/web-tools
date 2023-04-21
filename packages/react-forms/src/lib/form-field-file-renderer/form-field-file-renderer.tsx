@@ -48,7 +48,7 @@ export function FormFieldFileRenderer({
           ? (fieldProps.value as File[])
           : undefined;
 
-        const showAddButton = field.multiple || (files || []).length < 1;
+        const showAddButton = !field.disabled && (field.multiple || (files || []).length < 1);
 
         const deleteFile = (file: File) => {
           const remainingFiles = files?.filter((f) => f !== file) || [];
@@ -97,6 +97,7 @@ export function FormFieldFileRenderer({
                   accept={field.accepts}
                   onChange={(e) => addFiles(e.target.files)}
                   className={classNames.field.file.input}
+                  disabled={field.disabled}
                 />
                 {showAddButton && (
                   <Button

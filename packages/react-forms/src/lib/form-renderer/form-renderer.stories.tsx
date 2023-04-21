@@ -312,3 +312,17 @@ Autofill.play = async () => {
     }
   );
 };
+
+
+export const DisabledFields = Template.bind({});
+DisabledFields.args = {
+  fields: fields.map(f => ({...f, disabled: true})) as FormField[],
+  values: {
+    name: 'Al Capone',
+    email: 'al@mafia.com',
+    country: 'fr',
+    notifications: true,
+    'notifications-delay': 42,
+    birthdate: new Date('1899-01-17'),
+  },
+};
