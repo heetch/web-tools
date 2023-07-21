@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Controller, FieldValues } from 'react-hook-form';
-import { InputField } from '@heetch/flamingo-react';
+import { InputField, theme as flamingo } from '@heetch/flamingo-react';
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldNumber } from '../../types/fields';
 import { buildValidationRules, classNames, isRequired } from '../../utils';
@@ -98,6 +98,8 @@ function NumberFieldRenderer({
       | undefined
   )?.parameter;
 
+  const invalid = !!fieldState?.error;
+
   const props = {
     ...fieldProps,
     onChange,
@@ -106,7 +108,8 @@ function NumberFieldRenderer({
     label,
     placeholder,
     helper: fieldState?.error ? fieldState.error.message : field.helper,
-    invalid: !!fieldState?.error,
+    invalid,
+    textColor: invalid ? flamingo.color.element.error : undefined,
     type: 'number',
     min,
     max,
