@@ -1,4 +1,4 @@
-<img src="https://img.stackshare.io/company/25520/253b20c23e340d1d19635b80196211f416bc2413.png" alt="Heetch" width="64" style="float: left; margin-right: 16px" />
+# The web-tools library has been archived and is no longer under active maintenance.
 
 # Heetch's Web Tools
 
