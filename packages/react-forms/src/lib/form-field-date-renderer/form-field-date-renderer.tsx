@@ -59,7 +59,7 @@ export function FormFieldDateRenderer({
         const errorHelper = fieldState?.error?.message;
 
         const iconColor = props.invalid
-          ? flamingo.color_v3.feedback.error
+          ? flamingo.color.element.error
           : options?.iconColor;
 
         type MinMaxValidator = Exclude<

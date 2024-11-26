@@ -70,7 +70,7 @@ export function FormFieldFileRenderer({
                 <UiText
                   key={file.name}
                   variant="subContent"
-                  textColor={flamingo.color_v3.type.default}
+                  textColor={flamingo.color.text.primary}
                   className={[
                     styles['FileItem'],
                     classNames.field.file.item,
@@ -101,12 +101,14 @@ export function FormFieldFileRenderer({
                 />
                 {showAddButton && (
                   <Button
-                    variant="text"
+                    variant="minimal"
                     onClick={() => fileInputRef.current?.click()}
                     className={classNames.field.file.add_button}
                   >
+                    &nbsp;
                     <Icon icon="IconPlus" size="s" />
-                    {placeholder}
+                    {placeholder ? <>{placeholder}&nbsp;</> : ''}
+                    &nbsp;
                   </Button>
                 )}
               </div>

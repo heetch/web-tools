@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { FormRenderer } from './form-renderer';
 import { FormField } from '../../types/fields';
 import { screen, userEvent } from '@storybook/testing-library';
+import { expect, jest } from '@storybook/jest';
 import { sleep } from '../../utils';
 
 const fields: FormField[] = [
@@ -15,7 +16,7 @@ const fields: FormField[] = [
       { type: 'required' },
       {
         type: 'max_size',
-        parameter: 100,
+        parameter: 100
       },
       {
         type: 'function',
@@ -23,9 +24,9 @@ const fields: FormField[] = [
         parameter: (value) => {
           if (value === 'John Doe') return 'No unknown people';
           return true;
-        },
-      },
-    ],
+        }
+      }
+    ]
   },
   {
     id: 'email',
@@ -33,7 +34,7 @@ const fields: FormField[] = [
     label: 'E-mail',
     placeholder: 'Please enter a valid e-mail',
     format: 'email',
-    validators: [{ type: 'required' }],
+    validators: [{ type: 'required' }]
   },
   {
     id: 'country',
@@ -43,9 +44,9 @@ const fields: FormField[] = [
     options: [
       { value: 'fr', label: 'France' },
       { value: 'be', label: 'Belgium' },
-      { value: 'ch', label: 'Switzerland' },
+      { value: 'ch', label: 'Switzerland' }
     ],
-    validators: [{ type: 'required' }],
+    validators: [{ type: 'required' }]
   },
   {
     id: 'birthdate',
@@ -53,12 +54,12 @@ const fields: FormField[] = [
     label: 'Date of birth',
     format: 'date',
     yearSelector: true,
-    validators: [{ type: 'max', parameter: new Date() }],
+    validators: [{ type: 'max', parameter: new Date() }]
   },
   {
     id: 'notifications',
     type: 'boolean',
-    label: 'Enable notifications',
+    label: 'Enable notifications'
   },
   {
     id: 'notifications-delay',
@@ -66,8 +67,8 @@ const fields: FormField[] = [
     label: 'Notifications delay',
     helper: 'Delay in minutes between notifications',
     format: 'integer',
-    validators: [{ type: 'min', parameter: 0 }],
-  },
+    validators: [{ type: 'min', parameter: 0 }]
+  }
 ];
 
 export default {
@@ -77,11 +78,15 @@ export default {
     fields,
     values: {},
     options: {
-      showRequiredAsterisk: true,
-    },
-    onSubmit: action('submit'),
-    onChange: action('change'),
+      showRequiredAsterisk: true
+    }
+    // onSubmit: action('submit'),
+    // onChange: action('change')
   },
+  argTypes: {
+    onSubmit: { action: 'submit' },
+    onChange: { action: 'change' }
+  }
 } as ComponentMeta<typeof FormRenderer>;
 
 const Template: ComponentStory<typeof FormRenderer> = (args) => (
@@ -96,29 +101,29 @@ LabelAsPlaceholder.storyName = 'Label as placeholder';
 LabelAsPlaceholder.args = {
   options: {
     ...(LabelAsPlaceholder.args?.options, {}),
-    showLabelsAsPlaceholders: true,
-  },
+    showLabelsAsPlaceholders: true
+  }
 };
 
 export const Layout = Template.bind({});
 Layout.args = {
   layout: [
     {
-      cells: [{ field: 'name' }, { field: 'email' }],
+      cells: [{ field: 'name' }, { field: 'email' }]
     },
     {
       cells: [
         { field: 'country', widthConstraint: 3 },
-        { field: 'birthdate', widthConstraint: 2 },
-      ],
+        { field: 'birthdate', widthConstraint: 2 }
+      ]
     },
     {
       cells: [
         { field: 'notifications', widthConstraint: '200px' },
-        { field: 'notifications-delay' },
-      ],
-    },
-  ],
+        { field: 'notifications-delay' }
+      ]
+    }
+  ]
 };
 
 export const InitialValues = Template.bind({});
@@ -127,8 +132,8 @@ InitialValues.args = {
     name: 'Al Capone',
     notifications: true,
     'notifications-delay': 42,
-    birthdate: new Date('1899-01-17'),
-  },
+    birthdate: new Date('1899-01-17')
+  }
 };
 
 export const CustomTexts = Template.bind({});
@@ -138,31 +143,31 @@ CustomTexts.args = {
     errors: {
       required: 'Custom required error',
       max_size: {
-        string: (x) => `Custom max size error (${x} letters)`,
-      },
-    },
+        string: (x) => `Custom max size error (${x} letters)`
+      }
+    }
   },
   values: {
     name: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    country: 'fr',
-  },
+    country: 'fr'
+  }
 };
 CustomTexts.play = async () => {
   await userEvent.type(
     screen.getByLabelText('Name *', {
-      selector: 'input',
+      selector: 'input'
     }),
     'x'
   );
   await userEvent.type(
     screen.getByLabelText('E-mail *', {
-      selector: 'input',
+      selector: 'input'
     }),
     'foo'
   );
   await userEvent.selectOptions(
     screen.getByLabelText('Country *', {
-      selector: 'select',
+      selector: 'select'
     }),
     ''
   );
@@ -179,15 +184,15 @@ Validation.args = {
     {
       cells: [
         { field: 'notifications', widthConstraint: '200px' },
-        { field: 'notifications-delay' },
-      ],
-    },
+        { field: 'notifications-delay' }
+      ]
+    }
   ],
   values: {
     name: 'John X',
     email: 'john.x@mail.com',
     notifications: true,
-    'notifications-delay': 0,
+    'notifications-delay': 0
   },
   validators: [
     {
@@ -200,14 +205,14 @@ Validation.args = {
             errors: [
               {
                 field: 'name',
-                error: 'Unknowns are forbidden',
-              },
-            ],
+                error: 'Unknowns are forbidden'
+              }
+            ]
           };
         }
 
         return { errors: [] };
-      },
+      }
     },
     {
       validator: (values) => {
@@ -219,14 +224,14 @@ Validation.args = {
             errors: [
               {
                 field: 'email',
-                error: 'No "x" in emails',
-              },
-            ],
+                error: 'No "x" in emails'
+              }
+            ]
           };
         }
 
         return { errors: [] };
-      },
+      }
     },
     {
       async: true,
@@ -241,18 +246,18 @@ Validation.args = {
                 errors: [
                   {
                     field: 'notifications-delay',
-                    error: 'Must be > 1 if notifications are enabled',
-                  },
-                ],
+                    error: 'Must be > 1 if notifications are enabled'
+                  }
+                ]
               });
             }
             resolve({
-              errors: [],
+              errors: []
             });
           }, 1000);
-        }),
-    },
-  ],
+        })
+    }
+  ]
 };
 Validation.play = async () => {
   await sleep(500);
@@ -271,7 +276,7 @@ Autofill.args = {
         { type: 'required' },
         {
           type: 'max_size',
-          parameter: 100,
+          parameter: 100
         },
         {
           type: 'function',
@@ -286,9 +291,9 @@ Autofill.args = {
             }
 
             return true;
-          },
-        },
-      ],
+          }
+        }
+      ]
     },
     {
       id: 'email',
@@ -296,19 +301,19 @@ Autofill.args = {
       label: 'E-mail',
       placeholder: 'Please enter a valid e-mail',
       format: 'email',
-      validators: [{ type: 'required' }],
-    },
-  ] as FormField[],
+      validators: [{ type: 'required' }]
+    }
+  ] as FormField[]
 };
 Autofill.play = async () => {
   await sleep(100);
   await userEvent.type(
     screen.getByLabelText('Name *', {
-      selector: 'input',
+      selector: 'input'
     }),
     'John Doe',
     {
-      delay: 100,
+      delay: 100
     }
   );
 };
@@ -316,13 +321,66 @@ Autofill.play = async () => {
 
 export const DisabledFields = Template.bind({});
 DisabledFields.args = {
-  fields: fields.map(f => ({...f, disabled: true})) as FormField[],
+  fields: fields.map(f => ({ ...f, disabled: true })) as FormField[],
   values: {
     name: 'Al Capone',
     email: 'al@mafia.com',
     country: 'fr',
     notifications: true,
     'notifications-delay': 42,
-    birthdate: new Date('1899-01-17'),
-  },
+    birthdate: new Date('1899-01-17')
+  }
+};
+
+export const RemoveExistingValues = Template.bind({});
+RemoveExistingValues.args = {
+  fields: [
+    {
+      id: 'name',
+      type: 'string',
+      label: 'Name',
+      format: 'line'
+    },
+    {
+      id: 'coords.lat',
+      type: 'number',
+      label: 'Latitude',
+      format: 'decimal'
+    },
+    {
+      id: 'coords.long',
+      type: 'number',
+      label: 'Longitude',
+      format: 'decimal'
+    }
+  ],
+  values: {
+    name: 'Orly',
+    coords: {
+      lat: 42.5,
+      long: 1.75
+    }
+  }
+};
+RemoveExistingValues.play = async ({ args }) => {
+  await userEvent.clear(
+    screen.getByLabelText('Name')
+  );
+  await userEvent.clear(
+    screen.getByLabelText('Latitude')
+  );
+  await userEvent.clear(
+    screen.getByLabelText('Longitude')
+  );
+  expect(args.onSubmit).not.toHaveBeenCalled();
+  await sleep(200);
+  await userEvent.click(screen.getByText('Submit'));
+  await sleep(200);
+  expect(args.onSubmit).toHaveBeenCalledWith({
+    name: '',
+    coords: {
+      lat: undefined,
+      long: undefined
+    }
+  });
 };

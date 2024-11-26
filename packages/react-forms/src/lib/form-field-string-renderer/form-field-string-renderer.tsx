@@ -1,7 +1,12 @@
 import { FormFieldRendererProps } from '../../types/renderer';
 import { FormFieldString } from '../../types/fields';
 import { Controller } from 'react-hook-form';
-import { InputField, SelectField, TextareaField } from '@heetch/flamingo-react';
+import {
+  InputField,
+  SelectField,
+  TextareaField,
+  theme as flamingo,
+} from '@heetch/flamingo-react';
 import { buildValidationRules, classNames, isRequired } from '../../utils';
 
 export function FormFieldStringRenderer({
@@ -29,6 +34,8 @@ export function FormFieldStringRenderer({
           label = undefined;
         }
 
+        const invalid = !!fieldState?.error;
+
         const props = {
           ...fieldProps,
           id: fieldProps.name,
@@ -36,7 +43,8 @@ export function FormFieldStringRenderer({
           label,
           placeholder,
           helper: fieldState?.error ? fieldState.error.message : field.helper,
-          invalid: !!fieldState?.error,
+          invalid,
+          textColor: invalid ? flamingo.color.element.error : undefined,
           disabled: field.disabled,
         };
 

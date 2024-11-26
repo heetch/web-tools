@@ -71,7 +71,7 @@ Helper.args = {
 export const IconColor = Template.bind({});
 IconColor.args = {
   field: base,
-  options: { iconColor: flamingo.color_v3.brand.pink.shade1 },
+  options: { iconColor: flamingo.color.brand.primary },
 };
 
 export const DateTime = Template.bind({});
